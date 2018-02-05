@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="stylesheet.css">
-    <title>Tic Tac Toe</title>
-  </head>
-  <body>
-    <table>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-    </table>
-  </body>
-</html>
+<table>
+  <% @board.each do |row| %>
+    <tr>
+      <% row.each do |space|%>
+        <td id="<%= space %>"><%= space %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

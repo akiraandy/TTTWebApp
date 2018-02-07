@@ -7,8 +7,10 @@ $(document).ready(function() {
           data: {
               space: $(this).attr('id'),
           },
+          dataType: "json",
           success: function(result) {
-              alert('ok');
+              $('#' + result.spot).empty();
+              $('#' + result.spot).append(result.marker);
           },
           error: function(result) {
               alert('error');

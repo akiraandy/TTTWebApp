@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'json'
 require_relative './game/game_controller'
 require_relative './game/human'
 require_relative './game/computer'
@@ -11,9 +12,9 @@ get '/' do
 end
 
 get '/game' do
-  @game = session[:game]
-  if @game
-    @board = @game.board.spaces.each_slice(3).to_a
+  game = session[:game]
+  if game
+    @board = game.board.spaces.each_slice(3).to_a
     erb :game
   else
     redirect '/'
@@ -47,5 +48,17 @@ post '/game' do
 end
 
 put '/game' do
-  @game.params[:space]
+  spot = params[:space].to_i
+  game = session[:game]
+  if game.active_player == Computer
+    game.active_player.take_turn(game)
+  else
+    game.active_player.take_turn(game, spot)
+  end
+
+  if request.xhr?
+    JSON.generate(marker: game.active_player.marker, spot: spot)
+  else
+    redirect '/game'
+  end
 end

@@ -55,7 +55,9 @@ describe 'filling in a space', type: :feature do
   it "should do stuff" do
     post '/game', game_type: "HvH", first_player: "1"
     visit '/game'
-    page.find().click
-    expect(last_response.redirect?).to be true
+    within('table') do
+      find('td')
+    end
+    # expect(last_response.redirect?).to be true
   end
 end

@@ -1,4 +1,5 @@
 require_relative 'board'
+require_relative 'player'
 
 class Game_Controller
   attr_reader :player1, :player2, :active_player_marker, :inactive_player_marker
@@ -78,7 +79,7 @@ class Game_Controller
     players.each do |player|
       display
       player.take_turn(self)
-      sleep(@slow)
+      # sleep(@slow)
       break if over?
     end
   end
@@ -88,6 +89,16 @@ class Game_Controller
       take_turns
     end
     game_end
+  end
+
+  def game_type
+    if players.all? { |player| player.class == Human }
+      "HvH"
+    elsif players.all? { |player| player.class == Computer }
+      "CvC"
+    else
+      "HvC"
+    end
   end
 
   def game_end

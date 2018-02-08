@@ -20,7 +20,8 @@ RSpec.describe Human do
 
   context "#take_turn" do
     it "should fill board with marker" do
-      human.take_turn(game)
+      spot = 1
+      human.take_turn(game, spot)
       expect(game.board.available_spaces.length).to eq(game.board.spaces.length - 1)
     end
   end

@@ -54,6 +54,14 @@ class Game_Controller
     end
   end
 
+  def inactive_player
+    if board.empty_spaces.odd?
+      players[1]
+    else
+      players[0]
+    end
+  end
+
   def winner
     WINNING_COMBOS.each do |combo|
       if three_in_a_row(combo).uniq.length == 1
@@ -77,7 +85,7 @@ class Game_Controller
 
   def take_turns
     players.each do |player|
-      display
+      # display
       player.take_turn(self)
       # sleep(@slow)
       break if over?

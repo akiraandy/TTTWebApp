@@ -15,8 +15,8 @@ class Computer < Player
 
   def take_turn(game)
     @game = game
-    announce_turn
     game.board.fill_spot(choose_move, marker)
+    @best_move
   end
 
   def choose_move

@@ -34,7 +34,9 @@ class Board
     if valid_spot?(spot)
       @spaces[spot - 1] = marker
       @last_move = {marker: @spaces[spot - 1], spot: spot}
+      true
     end
+    false
   end
 
   def reset_spot(spot)

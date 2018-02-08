@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry-byebug'
 require_relative '../../game/game_controller'
 
 describe 'App' do
@@ -11,7 +12,8 @@ describe 'App' do
 
   context "POST /game" do
     it "should allow post request" do
-      post '/game'
+      post '/game', game_type: "HvH", first_player: "first_player"
+      expect(last_response.redirect?).to be true
     end
 
     it "should redirect to welcome if fields not filled" do
@@ -22,7 +24,7 @@ describe 'App' do
     end
 
     it "should redirect to game if field are correctly filled" do
-      post '/game', params: { game_type: "HvH", first_player: "1" }
+      post '/game', params: { game_type: "HvH", first_player: "first_player" }
       expect(last_response.redirect?).to be true
       follow_redirect!
       expect(last_request.path).to eq('/')
@@ -31,7 +33,7 @@ describe 'App' do
 
   context "GET /game" do
     before(:each) do
-      post '/game', game_type: "HvH", first_player: "1"
+      post '/game', game_type: "HvH", first_player: "first_player"
       get '/game'
     end
 
@@ -42,22 +44,37 @@ describe 'App' do
     it "should display a tic tac toe board" do
       expect(last_response.body).to include("<table>")
     end
+
+    it "should let the user know who won" do
+      game = Game_Controller.new(Human.new("X", true), Human.new("Y"))
+      game.board.spaces = ["X", "X", "X", 4, 5, 6, 7, 8, 9]
+      get '/game', {}, { 'rack.session' => { game: game } }
+      expect(last_response.body).to include('<h1>X won!</h1>')
+    end
   end
 
   context 'PUT /game' do
-    xit "should update the game state when a move is clicked" do
-
+    it "should update the game state" do
+      get '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
+      put '/game', space: "1"
+      get '/game'
+      expect(last_response.body).to include('<td id="X">X</td>')
     end
-  end
-end
 
-describe 'filling in a space', type: :feature do
-  it "should do stuff" do
-    post '/game', game_type: "HvH", first_player: "1"
-    visit '/game'
-    within('table') do
-      find('td')
+    it "should not update the game state if space is already marked" do
+      get '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
+      put '/game', space: "1"
+      put '/game', space: "1"
+      get '/game'
+      expect(last_response.body).to_not include('<td id="Y">Y</td>')
     end
-    # expect(last_response.redirect?).to be true
+
+    it "should not update the game state further after the game is over" do
+      game = Game_Controller.new(Human.new("X"), Human.new("Y", true))
+      game.board.spaces = ["X", "X", "X", "Y", "Y", 6, 7, 8, 9]
+      get '/game', {}, { 'rack.session' => { game: game } }
+      put '/game', space: "6"
+      expect(last_response.redirect?).to be true
+    end
   end
 end

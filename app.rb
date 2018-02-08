@@ -3,7 +3,7 @@ require 'json'
 require_relative './game/game_controller'
 require_relative './game/human'
 require_relative './game/computer'
-
+require 'pry-byebug'
 enable :sessions
 set :session_secret, "something"
 
@@ -15,11 +15,13 @@ get '/game' do
   game = session[:game]
   if game
     @board = game.board.spaces.each_slice(3).to_a
+    @game = game
     erb :game
   else
     redirect '/'
   end
 end
+
 
 post '/game' do
   if !params[:game_type] || !params[:first_player]
@@ -27,7 +29,7 @@ post '/game' do
   end
 
   case params[:first_player]
-  when 1
+  when "first_player"
     first_player = true
     second_player = false
   else
@@ -50,14 +52,20 @@ end
 put '/game' do
   spot = params[:space].to_i
   game = session[:game]
-  if game.active_player == Computer
-    game.active_player.take_turn(game)
+  if game.over?
+    redirect '/game'
+  end
+
+  if game.active_player.class == Computer
+    marker = game.active_player.marker
+    spot = game.active_player.take_turn(game)
   else
-    game.active_player.take_turn(game, spot)
+    marker = game.active_player.marker
+    valid_move = game.active_player.take_turn(game, spot)
   end
 
   if request.xhr?
-    JSON.generate(marker: game.active_player.marker, spot: spot)
+    JSON.generate(marker: marker, spot: spot, valid: valid_move, winner: game.winner, tie: game.tie?, computer: game.active_player.class)
   else
     redirect '/game'
   end

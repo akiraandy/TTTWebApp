@@ -9,6 +9,13 @@
   </head>
   <body>
     <h1>Tic Tac Toe</h1>
+    <div id="result">
+      <% if @game.winner? %>
+        <h1><%= @game.winner %> won!</h1>
+      <% elsif @game.tie? %>
+        <h1>It's a tie!</h1>
+      <% end %>
+    </div>
     <%= erb(:board) %>
   </body>
 </html>

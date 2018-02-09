@@ -101,28 +101,4 @@ RSpec.describe Game_Controller do
       expect(game.winner).to eq("X")
     end
   end
-
-  context "#game_type" do
-    it "should return a string" do
-      expect(game.game_type).to be_a String
-    end
-
-    it "should return HvH if both players are human" do
-      expect(game.game_type).to eq "HvH"
-    end
-
-    it "should return HvC if one player is human and the other is computer" do
-      player1 = Human.new("X", true)
-      player2 = Computer.new("O")
-      game = Game_Controller.new(player1, player2)
-      expect(game.game_type).to eq "HvC"
-    end
-
-    it "should return CvC if both players are computers" do
-      player1 = Computer.new("X")
-      player2 = Computer.new("O")
-      game = Game_Controller.new(player1, player2)
-      expect(game.game_type).to eq "CvC"
-    end
-  end
 end

@@ -3,7 +3,7 @@ require 'json'
 require_relative './game/game_controller'
 require_relative './game/human'
 require_relative './game/computer'
-require 'pry-byebug'
+
 enable :sessions
 set :session_secret, "something"
 
@@ -13,16 +13,14 @@ end
 
 get '/game' do
   if session[:game]
-    game = session[:game]
+    @game = session[:game]
   else
     redirect '/'
   end
 
-  @board = game.board.spaces.each_slice(3).to_a
-  @game = game
+  @board = @game.board.spaces.each_slice(3).to_a
   erb :game
 end
-
 
 post '/game' do
   if !params[:game_type] || !params[:first_player]

@@ -10,6 +10,7 @@ GEM
       rack (>= 1.2.1)
       rake
     jasmine-core (3.0.0)
+    json (2.1.0)
     method_source (0.9.0)
     mustermann (1.0.1)
     phantomjs (2.1.1.0)
@@ -50,6 +51,7 @@ PLATFORMS
 
 DEPENDENCIES
   jasmine
+  json
   pry-byebug
   rack
   rack-test

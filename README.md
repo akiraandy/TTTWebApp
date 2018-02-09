@@ -43,7 +43,10 @@ gem install shotgun
 shotgun app.rb
 ```
 
-8. Navigate to the local host that shotgun displays in your terminal
+8. Navigate to the localhost address that shotgun gives you in your browser i.e.
+```
+http://localhost:9393/
+```
 
 9. To run the test suite
 ```

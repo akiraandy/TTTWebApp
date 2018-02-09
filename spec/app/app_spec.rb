@@ -12,7 +12,7 @@ describe 'App' do
 
   context "POST /game" do
     it "should allow post request" do
-      post '/game', game_type: "HvH", first_player: "first_player"
+      post '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
       expect(last_response.redirect?).to be true
     end
 
@@ -29,12 +29,18 @@ describe 'App' do
       follow_redirect!
       expect(last_request.path).to eq('/')
     end
+
+    it "game should start with computer move if computer player going first" do
+      post '/game', { game_type: "HvC", first_player: "second_player"}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Computer.new("Y", true)) } }
+      expect(last_response.redirect?).to be true
+      follow_redirect!
+      expect(last_response.body).to include('<td id="Y">Y</td>')
+    end
   end
 
-  context "GET /game" do
+  context "GET /game human versus human" do
     before(:each) do
-      post '/game', game_type: "HvH", first_player: "first_player"
-      get '/game'
+      get '/game', { }, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Human.new("Y", true)) } }
     end
 
     it "should allow access to the current game if it exists" do
@@ -50,6 +56,17 @@ describe 'App' do
       game.board.spaces = ["X", "X", "X", 4, 5, 6, 7, 8, 9]
       get '/game', {}, { 'rack.session' => { game: game } }
       expect(last_response.body).to include('<h1>X won!</h1>')
+    end
+  end
+
+  context "GET /game computer versus human" do
+    before (:each) do
+      post '/game', { game_type: "HvC", first_player: "second_player" }, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Computer.new("Y", true)) } }
+      follow_redirect!
+    end
+
+    it "game should start with computer marker on the board if computer goes first" do
+      expect(last_response.body).to include('<td id="Y">Y</td>')
     end
   end
 
@@ -75,6 +92,8 @@ describe 'App' do
       get '/game', {}, { 'rack.session' => { game: game } }
       put '/game', space: "6"
       expect(last_response.redirect?).to be true
+      follow_redirect!
+      expect(last_response.body).to include('<td id="6">6</td>')
     end
   end
 end

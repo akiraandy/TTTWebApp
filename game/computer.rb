@@ -16,7 +16,6 @@ class Computer < Player
   def take_turn(game)
     @game = game
     game.board.fill_spot(choose_move, marker)
-    @best_move
   end
 
   def choose_move

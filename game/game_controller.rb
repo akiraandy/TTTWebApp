@@ -1,8 +1,9 @@
 require_relative 'board'
+require_relative 'player'
 
 class Game_Controller
   attr_reader :player1, :player2, :active_player_marker, :inactive_player_marker
-  attr_accessor :active_player, :inactive_player, :board
+  attr_accessor :board
 
   WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 
@@ -46,11 +47,11 @@ class Game_Controller
   end
 
   def active_player
-    if board.empty_spaces.odd?
-      players[0]
-    else
-      players[1]
-    end
+    board.empty_spaces.odd? ? players[0] : players[1]
+  end
+
+  def inactive_player
+    board.empty_spaces.odd? ? players[1] : players[0]
   end
 
   def winner
@@ -62,23 +63,9 @@ class Game_Controller
     nil
   end
 
-  def announce_last_move
-    if board.last_move
-      puts "\n#{board.last_move[:marker]} chose spot #{board.last_move[:spot]}"
-    end
-  end
-
-  def display
-    puts `clear`
-    puts board.to_s
-    announce_last_move
-  end
-
   def take_turns
     players.each do |player|
-      display
       player.take_turn(self)
-      sleep(@slow)
       break if over?
     end
   end
@@ -88,14 +75,5 @@ class Game_Controller
       take_turns
     end
     game_end
-  end
-
-  def game_end
-    display
-    if winner?
-      puts "\nGame over! #{winner} won!"
-    else
-      puts "\nGame over! It's a tie!"
-    end
   end
 end

@@ -1,76 +1,51 @@
 $(document).ready(() => {
-  humanVersusHuman();
-  humanVersusComputer();
+  play();
 });
 
-function humanVersusComputer() {
-  $("td").click(function(e) {
+function play() {
+  $("td").click(e => {
     e.preventDefault();
     let request = $.ajax({
         type: "PUT",
         url: "/game",
         data: {
-            space: $(this).attr('id'),
+            space: $(e.currentTarget).attr('id'),
         },
         dataType: "json"
     });
     request.then((response) => {
-        computerTurn(response);
-        makeHumanMove(response);
-      });
+      console.log(response);
+      putMarkersDown(response);
+      if (response.over === true) {
+        gameResult(response);
+      };
+    });
   });
 };
 
-function makeHumanMove(response) {
-  if (response.valid === true) {
-    $('#' + response.spot).empty();
-    $('#' + response.spot).append(response.marker);
-    endGame(response);
-  } else {
-    alert("Invalid move");
-  };
-}
-
-function humanVersusHuman() {
-  $("td").click(function(e) {
-    e.preventDefault();
-    let request = $.ajax({
-        type: "PUT",
-        url: "/game",
-        data: {
-            space: $(this).attr('id'),
-        },
-        dataType: "json"
-    });
-    request.then((response) => {
-        makeHumanMove(response);
-        endGame(response);
-      });
+function putMarkersDown(response) {
+  response.moves.forEach(move => {
+    if (move.valid === true) {
+      $(`#${move.spot}`).empty();
+      $(`#${move.spot}`).append(move.marker);
+    };
   });
-}
+};
 
-function endGame(response) {
+function gameResult(response) {
   if (response.winner) {
-    console.log("GOT HERE WEEE")
-    $('#result').append("<h1>" + response.winner + " won!" + "</h1>");
-    $('#result').append('<button type="button" onclick="history.back();">Back</button>');
+    winner(response);
   } else if (response.tie) {
-    $('#result').append("<h1>" + "It's a tie!" + "</h1>");
-    $('#result').append('<button type="button" onclick="history.back();">Back</button>');
-  }
-}
+    tie();
+  };
+};
 
-function computerTurn(response) {
-  if (response.computer == "Computer") {
-    let computer_request = $.ajax({
-      type: "PUT",
-      url: "/game",
-      dataType: "json"
-    })
-    .then((comp_response) => {
-      $('#' + comp_response.spot).empty();
-      $('#' + comp_response.spot).append(comp_response.marker);
-      endGame(comp_response);
-    });
-  }
-}
+function winner(response) {
+  $('#result').append(`<h1>${response.winner} won!</h1>`);
+  $('#result').append('<button type="button" onclick="history.back();">Back</button>');
+};
+
+function tie() {
+  $('#result').append("<h1>It's a tie!</h1>");
+  $('#result').append('<button type="button" onclick="history.back();">Back</button>');
+};

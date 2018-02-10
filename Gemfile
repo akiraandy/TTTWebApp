@@ -2,6 +2,7 @@ source "https://rubygems.org"
 gem 'rack'
 gem 'sinatra'
 gem 'json'
+gem 'shotgun'
 
 group :test, :development do
   gem 'pry-byebug'

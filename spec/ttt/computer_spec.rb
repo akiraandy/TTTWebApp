@@ -1,7 +1,7 @@
-require_relative '../computer'
-require_relative '../board'
-require_relative '../human'
-require_relative '../game_controller'
+require_relative '../../ttt/src/computer'
+require_relative '../../ttt/src/board'
+require_relative '../../ttt/src/human'
+require_relative '../../ttt/src/game_controller'
 
 RSpec.describe Computer do
   let(:computer) { Computer.new("X", true) }

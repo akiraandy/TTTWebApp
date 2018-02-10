@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'pry-byebug'
-require_relative '../../game/game_controller'
+require_relative '../../ttt/src/game_controller'
 
 describe 'App' do
   context "GET /" do

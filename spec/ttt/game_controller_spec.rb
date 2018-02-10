@@ -1,6 +1,6 @@
-require_relative '../game_controller'
-require_relative '../board'
-require_relative '../human'
+require_relative '../../ttt/src/game_controller'
+require_relative '../../ttt/src/board'
+require_relative '../../ttt/src/human'
 
 RSpec.describe Game_Controller do
   let(:player1) { Human.new("X", true) }

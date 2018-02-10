@@ -1,5 +1,5 @@
-require_relative '../board'
-require_relative '../player'
+require_relative '../../ttt/src/board'
+require_relative '../../ttt/src/player'
 
 RSpec.describe Board do
   let(:board) { Board.new }

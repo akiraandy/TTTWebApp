@@ -1,4 +1,4 @@
-require_relative '../game_controller'
+require_relative '../../ttt/src/game_controller'
 
 RSpec.describe Human do
   let(:human) { Human.new("X", true) }

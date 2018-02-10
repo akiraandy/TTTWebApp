@@ -1,8 +1,5 @@
 require 'sinatra'
-require 'json'
-require_relative './game/game_controller'
-require_relative './game/human'
-require_relative './game/computer'
+Dir["./ttt/src/*.rb"].each {|file| require file }
 
 enable :sessions
 set :session_secret, "something"

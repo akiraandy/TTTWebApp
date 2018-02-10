@@ -1,4 +1,4 @@
-require_relative '../player'
+require_relative '../../ttt/src/player'
 
 RSpec.describe Player do
   let(:player) { Player.new("X")}

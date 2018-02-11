@@ -8,7 +8,7 @@ This is a web-browser version of the game Tic Tac Toe that provides two game mod
 
 To run the application please do the following:
 
-1. Make sure you have (https://www.ruby-lang.org/en/documentation/installation/ "ruby installed")
+1. Make sure you have [ruby installed](https://www.ruby-lang.org/en/documentation/installation/ "Ruby download page")
 
 2. Make sure you have bundler installed
 ```

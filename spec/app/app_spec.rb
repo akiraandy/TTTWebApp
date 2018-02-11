@@ -1,12 +1,27 @@
 require 'spec_helper'
-require 'pry-byebug'
 require_relative '../../ttt/src/game_controller'
+require_relative '../../ttt/src/human'
+require_relative '../../ttt/src/computer'
 
 describe 'App' do
   context "GET /" do
     it "should allow accessing the welcome page" do
       get "/"
       expect(last_response).to be_ok
+    end
+  end
+
+  context 'POST /locale' do
+    it "should allow post request" do
+      post '/locale', locale: "ja"
+      expect(last_response.redirect?).to be true
+    end
+
+    it "should change the language" do
+      post '/locale', locale: "ja"
+      follow_redirect!
+      # p last_response.body
+      expect(last_response.body).to include('<h1>三目並べ</h1>')
     end
   end
 

@@ -1,30 +1,26 @@
-require 'sinatra/base'
-require 'i18n'
-I18n.load_path += Dir[File.join(File.dirname(__FILE__), 'locales', '*.yml').to_s]
-Dir["./ttt/src/*.rb"].each {|file| require file }
-
 class WebApp < Sinatra::Base
-
-  helpers do
-    def get_locale
-      # Pulls the browser's language
-      @env["HTTP_ACCEPT_LANGUAGE"][0,2]
-    end
-
-    def t(*args)
-      # Just a simple alias
-      I18n.t(*args)
-    end
-  end
-
   enable :sessions
   set :session_secret, "something"
 
+  helpers do
+    def get_locale
+      I18n.locale
+    end
+
+    def t(*args)
+      I18n.t(*args)
+    end
+
+    def set_locale(locale)
+      I18n.locale = locale
+    end
+  end
+
+  before do
+    session[:locale] ? set_locale(session[:locale]) : nil
+  end
+
   get '/' do
-    p I18n.locale = :ja
-    p t "message"
-    # p t "message", :ja
-    # t "message", get_locale
     erb :welcome
   end
 
@@ -69,6 +65,11 @@ class WebApp < Sinatra::Base
     redirect '/game'
   end
 
+  post '/locale' do
+    session[:locale] = params[:locale]
+    redirect "/"
+  end
+
   put '/game' do
     spot = params[:space].to_i
     game = session[:game]
@@ -85,7 +86,7 @@ class WebApp < Sinatra::Base
     end
 
     if request.xhr?
-      JSON.generate(moves: moves, winner: game.winner, tie: game.tie?, over: game.over?)
+      JSON.generate(moves: moves, winner: game.winner, tie: game.tie?, over: game.over?, back: (t 'back', get_locale), win_locale: (t 'won', get_locale), tie_locale: (t 'tie', get_locale))
     else
       redirect '/game'
     end

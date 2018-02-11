@@ -1,0 +1,23 @@
+<form id="game_settings" action="game" method="post">
+    <p><%= t "choose_game_type", get_locale %></p>
+    <div>
+      <input type="radio" name="game_type" value="HvH" id="hvh">
+      <label for="hvh"><%= t "hvh", get_locale %></label>
+
+
+      <input type="radio" name="game_type" value="HvC" id="hvc">
+      <label for="hvc"><%= t "hvc", get_locale %></label>
+    </div>
+
+    <p><%= t "who_should_go_first", get_locale %></p>
+    <div>
+      <input type="radio" name="first_player" value="first_player" id="first">
+      <label for="first"><%= t "x", get_locale %></label>
+
+      <input type="radio" name="first_player" value="second_player" id="second">
+      <label for="second"><%= t "y", get_locale %></label>
+    </div>
+    <div class="">
+      <button class="btn waves-effect waves-light" type="submit"><%= t "play", get_locale %></button>
+    </div>
+</form>

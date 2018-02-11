@@ -14,7 +14,6 @@ function play() {
         dataType: "json"
     });
     request.then((response) => {
-      console.log(response);
       putMarkersDown(response);
       if (response.over === true) {
         gameResult(response);
@@ -36,16 +35,16 @@ function gameResult(response) {
   if (response.winner) {
     winner(response);
   } else if (response.tie) {
-    tie();
+    tie(response);
   };
 };
 
 function winner(response) {
-  $('#result').append(`<h1>${response.winner} won!</h1>`);
-  $('#result').append('<button type="button" onclick="history.back();">Back</button>');
+  $('#result').append(`<h1>${response.winner}${response.win_locale}</h1>`);
+  $('#result').append(`<button type="button" onclick="history.back();">${response.back}</button>`);
 };
 
-function tie() {
-  $('#result').append("<h1>It's a tie!</h1>");
-  $('#result').append('<button type="button" onclick="history.back();">Back</button>');
+function tie(response) {
+  $('#result').append(`<h1>${response.tie_locale}</h1>`);
+  $('#result').append(`<button type="button" onclick="history.back();">${response.back}</button>`);
 };

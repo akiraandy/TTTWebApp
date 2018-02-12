@@ -7,12 +7,10 @@ class Game_Controller
 
   WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 
-  def initialize(player1, player2, slow=0)
+  def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
-    @last_move = nil
     @board = Board.new
-    @slow = slow
     assign_opponents
   end
 
@@ -63,11 +61,16 @@ class Game_Controller
     nil
   end
 
-  def take_turns
-    players.each do |player|
-      player.take_turn(self)
-      break if over?
-    end
+  def take_turn(spot = nil, game = self)
+    active_player.take_turn(game, spot)
+  end
+
+  def active_player_marker
+    active_player.marker
+  end
+
+  def inactive_player_marker
+    inactive_player.marker
   end
 
   def play

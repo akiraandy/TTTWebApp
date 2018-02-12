@@ -27,16 +27,16 @@ class Board
   end
 
   def empty_spaces
-    @spaces.count { |space| space.is_a? Fixnum }
+    @spaces.count { |space| space.is_a? Integer }
   end
 
   def fill_spot(spot, marker)
     if valid_spot?(spot)
-      @spaces[spot - 1] = marker
-      @last_move = {marker: @spaces[spot - 1], spot: spot}
-      true
+        @spaces[spot - 1] = marker
+        spot
+    else
+        nil
     end
-    false
   end
 
   def reset_spot(spot)

@@ -13,7 +13,7 @@ class Computer < Player
     @game.board.available_spaces.select { |space| corners.include?(space) }.sample
   end
 
-  def take_turn(game)
+  def take_turn(game, spot = nil)
     @game = game
     game.board.fill_spot(choose_move, marker)
   end

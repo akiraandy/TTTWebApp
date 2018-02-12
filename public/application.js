@@ -1,6 +1,33 @@
 $(document).ready(() => {
   play();
+  // makeCall();
+  window.onbeforeunload = function(e) {
+    console.log(e.currentTarget.performance.navigation.type)
+    if(e.currentTarget.performance.navigation.type == 2)
+          {
+            console.log("HELLOOO");
+               alert("Browser back button is clicked...");
+          }
+  };
 });
+
+
+
+// function makeCall() {
+//   window.onbeforeunload = function(e) {
+//     e.preventDefault();
+//     let request = $.ajax({
+//       type: "GET",
+//       url: "/game",
+//       data: {
+//         back: 1,
+//       }
+//     });
+//     request.then((response) => {
+//       console.log(response);
+//     });
+//   };
+// }
 
 function play() {
   $("td").click(e => {
@@ -14,6 +41,7 @@ function play() {
         dataType: "json"
     });
     request.then((response) => {
+        console.log(response);
       putMarkersDown(response);
       if (response.over === true) {
         gameResult(response);
@@ -24,10 +52,8 @@ function play() {
 
 function putMarkersDown(response) {
   response.moves.forEach(move => {
-    if (move.valid === true) {
       $(`#${move.spot}`).empty();
       $(`#${move.spot}`).append(move.marker);
-    };
   });
 };
 

@@ -1,3 +1,5 @@
+require 'sinatra/base'
+
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -31,8 +33,14 @@ class WebApp < Sinatra::Base
       redirect '/'
     end
 
-    @board = @game.board.spaces.each_slice(3).to_a
+    @board = @game.current_state.each_slice(3).to_a
     erb :game
+
+    if request.xhr?
+      redirect "/game"
+    else
+      erb :game
+    end
   end
 
   post '/game' do
@@ -51,15 +59,15 @@ class WebApp < Sinatra::Base
 
     case params[:game_type]
     when "HvH"
-      session[:game] = Game_Controller.new(Human.new("X", first_player), Human.new("Y", second_player))
+      session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
     when "HvC"
-      session[:game] = Game_Controller.new(Human.new("X", first_player), Computer.new("Y", second_player))
+      session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
     end
 
     game = session[:game]
 
     if game.active_player.class == Computer
-      game.active_player.take_turn(game)
+      game.take_turn
     end
 
     redirect '/game'
@@ -79,10 +87,9 @@ class WebApp < Sinatra::Base
     end
 
     moves = []
-    moves << { marker: game.active_player.marker, valid: game.active_player.take_turn(game, spot), spot: spot }
+    moves << { marker: game.active_player_marker, spot: game.take_turn(spot) }
     if game.active_player.class == Computer && !game.over?
-      game.active_player.take_turn(game)
-      moves << { marker: game.inactive_player.marker, valid: true, spot: game.inactive_player.best_move }
+      moves << { marker: game.active_player_marker, spot: game.take_turn }
     end
 
     if request.xhr?

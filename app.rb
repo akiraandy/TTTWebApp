@@ -87,9 +87,11 @@ class WebApp < Sinatra::Base
     end
 
     moves = []
-    moves << { marker: game.active_player_marker, spot: game.take_turn(spot) }
+    turn = game.take_turn(spot)
+    moves << { marker: turn.marker, spot: turn.spot }
     if game.active_player.class == Computer && !game.over?
-      moves << { marker: game.active_player_marker, spot: game.take_turn }
+      turn = game.take_turn
+      moves << { marker: turn.marker, spot: turn.spot }
     end
 
     if request.xhr?

@@ -6,8 +6,8 @@ class Human < Player
     super
   end
 
-  def take_turn(game, spot)
-     game.board.fill_spot(spot, marker)
+  def take_turn(args)
+      Turn.new(marker, args[:spot])
   end
 
 end

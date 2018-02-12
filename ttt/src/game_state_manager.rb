@@ -10,10 +10,15 @@ class GameStateManager < Game_Controller
     @current = 0
   end
 
-  def take_turn(spot = nil, game = self)
-    valid = active_player.take_turn(game, spot)
-    valid ? add_to_store(board.spaces) : nil
-    valid
+  def take_turn(spot = nil)
+    turn = active_player.take_turn({game: self, spot: spot})
+    if board.valid_spot?(turn.spot)
+        board.fill_spot(turn.spot, turn.marker)
+        add_to_store(board.spaces)
+        turn
+    else
+        nil
+    end
   end
 
   def current_state

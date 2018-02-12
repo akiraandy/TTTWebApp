@@ -61,8 +61,8 @@ class Game_Controller
     nil
   end
 
-  def take_turn(spot = nil, game = self)
-    active_player.take_turn(game, spot)
+  def take_turn(spot = nil)
+    active_player.take_turn({game: self, spot: spot})
   end
 
   def active_player_marker

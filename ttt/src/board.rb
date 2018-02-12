@@ -31,12 +31,7 @@ class Board
   end
 
   def fill_spot(spot, marker)
-    if valid_spot?(spot)
-        @spaces[spot - 1] = marker
-        spot
-    else
-        nil
-    end
+    @spaces[spot - 1] = marker
   end
 
   def reset_spot(spot)

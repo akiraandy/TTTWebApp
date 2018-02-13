@@ -24,7 +24,7 @@ describe WebApp do
       expect(last_request.path).to eq('/')
     end
 
-    it "should redirect to game if field are correctly filled" do
+    it "should redirect to game if fields are correctly filled" do
       post '/game', params: { game_type: "HvH", first_player: "first_player" }
       expect(last_response.redirect?).to be true
       follow_redirect!

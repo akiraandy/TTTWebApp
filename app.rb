@@ -1,5 +1,4 @@
 require 'sinatra/base'
-
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -88,7 +87,10 @@ class WebApp < Sinatra::Base
 
     moves = []
     turn = game.take_turn(spot)
-    moves << { marker: turn.marker, spot: turn.spot }
+    if turn
+        moves << { marker: turn.marker, spot: turn.spot }
+    end
+
     if game.active_player.class == Computer && !game.over?
       turn = game.take_turn
       moves << { marker: turn.marker, spot: turn.spot }

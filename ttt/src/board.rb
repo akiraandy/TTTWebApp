@@ -1,6 +1,5 @@
 class Board
   attr_accessor :spaces
-  attr_reader :last_move
 
   def initialize
     @spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -19,7 +18,7 @@ class Board
   end
 
   def unplayed?
-    available_spaces.length == 9
+      available_spaces.length == spaces.length 
   end
 
   def last_space

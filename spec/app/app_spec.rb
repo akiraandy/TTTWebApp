@@ -35,7 +35,7 @@ describe WebApp do
       post '/game', { game_type: "HvC", first_player: "second_player"}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", false), Computer.new("Y", true)) } }
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_response.body).to include('<td id="Y">Y</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="Y">Y</td>')
     end
   end
 
@@ -44,7 +44,7 @@ describe WebApp do
       get '/game', { }, { 'rack.session' => { game: GameStateManager.new(Human.new("X", false), Human.new("Y", true)) } }
     end
 
-    it "should allow access to the current game if xit exists" do
+    it "should allow access to the current game if it exists" do
       expect(last_response).to be_ok
     end
 
@@ -54,7 +54,7 @@ describe WebApp do
 
     it "should let the user know who won" do
       game = GameStateManager.new(Human.new("X", true), Human.new("Y"))
-      game.board.spaces = ["X", "X", "X", 4, 5, 6, 7, 8, 9]
+      game.store = [["X", "X", "X", 4, 5, 6, 7, 8, 9]]
       get '/game', {}, { 'rack.session' => { game: game } }
       expect(last_response.body).to include('<h1>X won!</h1>')
     end
@@ -67,7 +67,7 @@ describe WebApp do
     end
 
     it "game should start with computer marker on the board if computer goes first" do
-      expect(last_response.body).to include('<td id="Y">Y</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="Y">Y</td>')
     end
   end
 
@@ -76,7 +76,7 @@ describe WebApp do
       get '/game', {}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
       put '/game', space: "1"
       get '/game'
-      expect(last_response.body).to include('<td id="X">X</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="X">X</td>')
     end
 
     it "should not update the game state if space is already marked" do
@@ -84,17 +84,17 @@ describe WebApp do
       put '/game', space: "1"
       put '/game', space: "1"
       get '/game'
-      expect(last_response.body).to_not include('<td id="Y">Y</td>')
+      expect(last_response.body).to_not include('<td data-cell="cell" data-id="Y">Y</td>')
     end
 
     it "should not update the game state further after the game is over" do
       game = GameStateManager.new(Human.new("X"), Human.new("Y", true))
-      game.board.spaces = ["X", "X", "X", "Y", "Y", 6, 7, 8, 9]
+      game.store = [["X", "X", "X", "Y", "Y", 6, 7, 8, 9]]
       get '/game', {}, { 'rack.session' => { game: game } }
       put '/game', space: "6"
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_response.body).to include('<td id="6">6</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="6">6</td>')
     end
   end
 

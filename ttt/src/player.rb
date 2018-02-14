@@ -1,6 +1,6 @@
 class Player
 
-  Turn = Struct.new(:marker, :spot)
+  Turn = Struct.new(:marker, :spot, :valid)
 
   attr_reader :marker
   attr_accessor :first, :opponent

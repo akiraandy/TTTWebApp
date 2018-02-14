@@ -96,7 +96,7 @@ class WebApp < Sinatra::Base
 
     moves = []
     turn = game.take_turn(spot)
-    if turn
+    if turn.valid
         moves << { marker: turn.marker, spot: turn.spot }
     end
 

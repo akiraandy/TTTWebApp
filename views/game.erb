@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1><%= t "title", get_locale%></h1>
-    <div id="result">
+    <div data-id="result">
       <% if @game.over? %>
         <% if @game.winner? %>
           <h1><%= @game.winner %><%= t "won", get_locale%></h1>

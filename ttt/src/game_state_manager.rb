@@ -16,10 +16,11 @@ class GameStateManager < Game_Controller
     if board.valid_spot?(current_state, turn.spot)
         new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
         add_to_store(new_state)
-        turn
+        turn.valid = true
     else
-        nil
+        turn.valid = false
     end
+    turn
   end
 
   def current_state

@@ -65,10 +65,11 @@ class Game_Controller
     turn = active_player.take_turn({game: self, spot: spot})
     if board.valid_spot?(turn.spot)
         board.fill_spot(turn.spot)
-        turn
+        turn.valid = true
     else
-        nil
+        turn.valid = false
     end
+    turn
   end
 
   def active_player_marker

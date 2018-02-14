@@ -31,15 +31,8 @@ class WebApp < Sinatra::Base
     else
       redirect '/'
     end
-
     @board = @game.current_state.each_slice(3).to_a
     erb :game
-
-    if request.xhr?
-      redirect "/game"
-    else
-      erb :game
-    end
   end
 
   post '/game' do
@@ -75,6 +68,22 @@ class WebApp < Sinatra::Base
   post '/locale' do
     session[:locale] = params[:locale]
     redirect "/"
+  end
+
+  put '/rewind' do
+    game = session[:game]
+    if game.board.unplayed?(game.current_state)
+        redirect "/"
+    end
+    if game.inactive_player.class == Computer
+        game.go_back(2)
+    else
+        game.go_back(1)
+    end
+    
+    if request.xhr?
+        JSON.generate(succes: "SUCCESS")
+    end
   end
 
   put '/game' do

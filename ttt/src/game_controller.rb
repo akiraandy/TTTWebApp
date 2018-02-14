@@ -41,7 +41,7 @@ class Game_Controller
   end
 
   def tie?
-    board.spaces.all? { |space| space.is_a? String } && !winner?
+    board.full? && !winner?
   end
 
   def active_player
@@ -62,7 +62,13 @@ class Game_Controller
   end
 
   def take_turn(spot = nil)
-    active_player.take_turn({game: self, spot: spot})
+    turn = active_player.take_turn({game: self, spot: spot})
+    if board.valid_spot?(turn.spot)
+        board.fill_spot(turn.spot)
+        turn
+    else
+        nil
+    end
   end
 
   def active_player_marker
@@ -71,12 +77,5 @@ class Game_Controller
 
   def inactive_player_marker
     inactive_player.marker
-  end
-
-  def play
-    until over?
-      take_turns
-    end
-    game_end
   end
 end

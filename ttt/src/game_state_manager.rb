@@ -1,12 +1,12 @@
 require_relative "game_controller"
 require_relative "./errors/invalidRangeForState"
-require 'pry-byebug'
+
 class GameStateManager < Game_Controller
   attr_accessor :store, :current
 
   def initialize(player1, player2)
     super
-    @store = [@board.spaces.dup]
+    @store = [board.spaces.dup]
     @current = 0
   end
 
@@ -66,7 +66,7 @@ class GameStateManager < Game_Controller
   end
 
   def inactive_player
-      board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    board.empty_spaces(current_state).odd? ? players[1] : players[0]
   end
       
   def three_in_a_row(combo)
@@ -74,6 +74,6 @@ class GameStateManager < Game_Controller
   end
   
   def tie?
-      board.full?(current_state) && !winner?
+    board.full?(current_state) && !winner?
   end
 end

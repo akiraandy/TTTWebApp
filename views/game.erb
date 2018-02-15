@@ -16,7 +16,7 @@
         <% else %>
           <h1><%= t "tie", get_locale%></h1>
         <% end %>
-        <button type="button" onclick="history.back();">Back</button>
+        <button data-id="gobacktowelcome" type="button">Back</button>
       <% end %>
     </div>
     <%= erb(:board) %>

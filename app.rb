@@ -81,9 +81,7 @@ class WebApp < Sinatra::Base
         game.go_back(1)
     end
     
-    if request.xhr?
-        JSON.generate(succes: "SUCCESS")
-    end
+    JSON.generate(succes: "SUCCESS")
   end
 
   put '/game' do

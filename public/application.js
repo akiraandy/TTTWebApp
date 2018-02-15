@@ -1,6 +1,7 @@
 $(document).ready(() => {
   play();
   browserBackButtonClicked();
+  goBackToWelcome();
 });
 
 function browserBackButtonClicked(){
@@ -13,6 +14,13 @@ function browserBackButtonClicked(){
     });
   };
 };
+
+function goBackToWelcome(){
+    $('[data-id=gobacktowelcome]').click(e => {
+       e.preventDefault();
+       document.location.href="/";
+    });
+}
 
 function rewind(){
 let request = $.ajax({

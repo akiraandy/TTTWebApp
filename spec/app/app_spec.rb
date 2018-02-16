@@ -1,9 +1,9 @@
-require 'spec_helper'
-require_relative '../../ttt/src/game_controller'
+require File.expand_path '../../spec_helper.rb', __FILE__
+require_relative '../../ttt/src/game_state_manager'
 require_relative '../../ttt/src/human'
 require_relative '../../ttt/src/computer'
 
-describe 'App' do
+describe WebApp do
   context "GET /" do
     it "should allow accessing the welcome page" do
       get "/"
@@ -11,23 +11,9 @@ describe 'App' do
     end
   end
 
-  context 'POST /locale' do
-    it "should allow post request" do
-      post '/locale', locale: "ja"
-      expect(last_response.redirect?).to be true
-    end
-
-    it "should change the language" do
-      post '/locale', locale: "ja"
-      follow_redirect!
-      # p last_response.body
-      expect(last_response.body).to include('<h1>三目並べ</h1>')
-    end
-  end
-
   context "POST /game" do
     it "should allow post request" do
-      post '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
+      post '/game', {}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
       expect(last_response.redirect?).to be true
     end
 
@@ -38,7 +24,7 @@ describe 'App' do
       expect(last_request.path).to eq('/')
     end
 
-    it "should redirect to game if field are correctly filled" do
+    it "should redirect to game if fields are correctly filled" do
       post '/game', params: { game_type: "HvH", first_player: "first_player" }
       expect(last_response.redirect?).to be true
       follow_redirect!
@@ -46,16 +32,16 @@ describe 'App' do
     end
 
     it "game should start with computer move if computer player going first" do
-      post '/game', { game_type: "HvC", first_player: "second_player"}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Computer.new("Y", true)) } }
+      post '/game', { game_type: "HvC", first_player: "second_player"}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", false), Computer.new("Y", true)) } }
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_response.body).to include('<td id="Y">Y</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="Y">Y</td>')
     end
   end
 
   context "GET /game human versus human" do
     before(:each) do
-      get '/game', { }, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Human.new("Y", true)) } }
+      get '/game', { }, { 'rack.session' => { game: GameStateManager.new(Human.new("X", false), Human.new("Y", true)) } }
     end
 
     it "should allow access to the current game if it exists" do
@@ -67,8 +53,8 @@ describe 'App' do
     end
 
     it "should let the user know who won" do
-      game = Game_Controller.new(Human.new("X", true), Human.new("Y"))
-      game.board.spaces = ["X", "X", "X", 4, 5, 6, 7, 8, 9]
+      game = GameStateManager.new(Human.new("X", true), Human.new("Y"))
+      game.store = [["X", "X", "X", 4, 5, 6, 7, 8, 9]]
       get '/game', {}, { 'rack.session' => { game: game } }
       expect(last_response.body).to include('<h1>X won!</h1>')
     end
@@ -76,39 +62,55 @@ describe 'App' do
 
   context "GET /game computer versus human" do
     before (:each) do
-      post '/game', { game_type: "HvC", first_player: "second_player" }, { 'rack.session' => { game: Game_Controller.new(Human.new("X", false), Computer.new("Y", true)) } }
+      post '/game', { game_type: "HvC", first_player: "second_player" }, { 'rack.session' => { game: GameStateManager.new(Human.new("X", false), Computer.new("Y", true)) } }
       follow_redirect!
     end
 
     it "game should start with computer marker on the board if computer goes first" do
-      expect(last_response.body).to include('<td id="Y">Y</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="Y">Y</td>')
     end
   end
 
   context 'PUT /game' do
     it "should update the game state" do
-      get '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
+      get '/game', {}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
       put '/game', space: "1"
       get '/game'
-      expect(last_response.body).to include('<td id="X">X</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="X">X</td>')
     end
 
     it "should not update the game state if space is already marked" do
-      get '/game', {}, { 'rack.session' => { game: Game_Controller.new(Human.new("X", true), Human.new("Y")) } }
+      get '/game', {}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
       put '/game', space: "1"
       put '/game', space: "1"
       get '/game'
-      expect(last_response.body).to_not include('<td id="Y">Y</td>')
+      expect(last_response.body).to_not include('<td data-cell="cell" data-id="Y">Y</td>')
     end
 
     it "should not update the game state further after the game is over" do
-      game = Game_Controller.new(Human.new("X"), Human.new("Y", true))
-      game.board.spaces = ["X", "X", "X", "Y", "Y", 6, 7, 8, 9]
+      game = GameStateManager.new(Human.new("X"), Human.new("Y", true))
+      game.store = [["X", "X", "X", "Y", "Y", 6, 7, 8, 9]]
       get '/game', {}, { 'rack.session' => { game: game } }
       put '/game', space: "6"
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_response.body).to include('<td id="6">6</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="6">6</td>')
+    end
+  end
+
+
+  context 'POST /locale' do
+    before(:each) do
+      post '/locale', locale: "ja"
+    end
+
+    it "should allow post request" do
+      expect(last_response.redirect?).to be true
+    end
+
+    it "should change the language" do
+      follow_redirect!
+      expect(last_response.body).to include('<h1>三目並べ</h1>')
     end
   end
 end

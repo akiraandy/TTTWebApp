@@ -1,4 +1,7 @@
 class Player
+
+  Turn = Struct.new(:marker, :spot, :valid)
+
   attr_reader :marker
   attr_accessor :first, :opponent
 
@@ -7,13 +10,4 @@ class Player
     @first = first
     @opponent = nil
   end
-
-  def announce_turn
-    puts "\n#{marker}'s turn!"
-  end
-
-  def announce_move(spot)
-    puts "\n#{marker} chose spot #{spot}."
-  end
-
 end

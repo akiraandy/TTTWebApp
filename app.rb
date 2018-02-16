@@ -1,3 +1,4 @@
+require 'sinatra/base'
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -30,8 +31,7 @@ class WebApp < Sinatra::Base
     else
       redirect '/'
     end
-
-    @board = @game.board.spaces.each_slice(3).to_a
+    @board = @game.current_state.each_slice(3).to_a
     erb :game
   end
 
@@ -51,15 +51,15 @@ class WebApp < Sinatra::Base
 
     case params[:game_type]
     when "HvH"
-      session[:game] = Game_Controller.new(Human.new("X", first_player), Human.new("Y", second_player))
+      session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
     when "HvC"
-      session[:game] = Game_Controller.new(Human.new("X", first_player), Computer.new("Y", second_player))
+      session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
     end
 
     game = session[:game]
 
     if game.active_player.class == Computer
-      game.active_player.take_turn(game)
+      game.take_turn
     end
 
     redirect '/game'
@@ -68,6 +68,20 @@ class WebApp < Sinatra::Base
   post '/locale' do
     session[:locale] = params[:locale]
     redirect "/"
+  end
+
+  put '/rewind' do
+    game = session[:game]
+    if game.board.unplayed?(game.current_state)
+        redirect "/"
+    end
+    if game.inactive_player.class == Computer
+        game.go_back(2)
+    else
+        game.go_back(1)
+    end
+    
+    JSON.generate(succes: "SUCCESS")
   end
 
   put '/game' do
@@ -79,10 +93,14 @@ class WebApp < Sinatra::Base
     end
 
     moves = []
-    moves << { marker: game.active_player.marker, valid: game.active_player.take_turn(game, spot), spot: spot }
+    turn = game.take_turn(spot)
+    if turn.valid
+        moves << { marker: turn.marker, spot: turn.spot }
+    end
+
     if game.active_player.class == Computer && !game.over?
-      game.active_player.take_turn(game)
-      moves << { marker: game.inactive_player.marker, valid: true, spot: game.inactive_player.best_move }
+      turn = game.take_turn
+      moves << { marker: turn.marker, spot: turn.spot }
     end
 
     if request.xhr?

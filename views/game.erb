@@ -9,14 +9,14 @@
   </head>
   <body>
     <h1><%= t "title", get_locale%></h1>
-    <div id="result">
+    <div data-id="result">
       <% if @game.over? %>
         <% if @game.winner? %>
           <h1><%= @game.winner %><%= t "won", get_locale%></h1>
         <% else %>
           <h1><%= t "tie", get_locale%></h1>
         <% end %>
-        <button type="button" onclick="history.back();">Back</button>
+        <button data-id="gobacktowelcome" type="button">Back</button>
       <% end %>
     </div>
     <%= erb(:board) %>

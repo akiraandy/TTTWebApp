@@ -1,12 +1,12 @@
 require_relative "game_controller"
 require_relative "./errors/invalidRangeForState"
 
-class State
+class GameStateManager < Game_Controller 
   attr_accessor :store, :current
 
-  def initialize(initial_state = [])
+  def initialize(player1, player2)
     super
-    @store = initial_state 
+    @store = [board.spaces.dup]
     @current = 0
   end
 

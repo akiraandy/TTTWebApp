@@ -15,6 +15,7 @@ class WebApp < Sinatra::Base
     def set_locale(locale)
       I18n.locale = locale
     end
+
   end
 
   before do
@@ -37,32 +38,33 @@ class WebApp < Sinatra::Base
 
   post '/game' do
     if !params[:game_type] || !params[:first_player]
-      redirect '/'
-    end
-
-    case params[:first_player]
-    when "first_player"
-      first_player = true
-      second_player = false
+        @error = t "error", get_locale 
+        erb :welcome
     else
-      first_player = false
-      second_player = true
+        case params[:first_player]
+        when "first_player"
+          first_player = true
+          second_player = false
+        else
+          first_player = false
+          second_player = true
+        end
+
+        case params[:game_type]
+        when "HvH"
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
+        when "HvC"
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
+        end
+
+        game = session[:game]
+
+        if game.active_player.class == Computer
+          game.take_turn
+        end
+
+        redirect '/game'
     end
-
-    case params[:game_type]
-    when "HvH"
-      session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
-    when "HvC"
-      session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
-    end
-
-    game = session[:game]
-
-    if game.active_player.class == Computer
-      game.take_turn
-    end
-
-    redirect '/game'
   end
 
   post '/locale' do

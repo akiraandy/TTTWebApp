@@ -12,3 +12,4 @@ en:
   play: "Play"
   back: "Back"
   confirm: "Confirm"
+  error: "Please fill in all game settings"

@@ -1,5 +1,5 @@
 require_relative 'player'
-
+require 'pry-byebug'
 class Computer < Player
   attr_accessor :game
   attr_reader :best_move
@@ -19,6 +19,7 @@ class Computer < Player
   end
 
   def choose_move
+      # binding.pry
     return take_corner if game.board.unplayed?
     return game.board.last_space if game.board.last_space
     best_possible_move

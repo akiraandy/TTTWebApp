@@ -13,22 +13,20 @@ describe WebApp do
 
   context "POST /game" do
     it "should allow post request" do
-      post '/game', {}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
+      post '/game', {game_type: "Test", first_player: "Test"}, { 'rack.session' => { game: GameStateManager.new(Human.new("X", true), Human.new("Y")) } }
       expect(last_response.redirect?).to be true
     end
 
-    it "should redirect to welcome if fields not filled" do
-      post '/game', params: { game_type: "Test", first_player: "Test" }
-      expect(last_response.redirect?).to be true
-      follow_redirect!
-      expect(last_request.path).to eq('/')
+    it "should show error on welcome if fields not filled" do
+      post '/game'
+      expect(last_response.body).to include('<h3 data-id="error">')
     end
 
     it "should redirect to game if fields are correctly filled" do
-      post '/game', params: { game_type: "HvH", first_player: "first_player" }
+      post '/game', { game_type: "HvH", first_player: "first_player" }
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_request.path).to eq('/')
+      expect(last_request.path).to eq('/game')
     end
 
     it "game should start with computer move if computer player going first" do

@@ -52,7 +52,8 @@ describe WebApp do
 
     it "should let the user know who won" do
       game = GameStateManager.new(Human.new("X", true), Human.new("Y"))
-      game.store = [["X", "X", "X", 4, 5, 6, 7, 8, 9]]
+      game.store = [["X", "X", 3, 4, 5, 6, 7, 8, 9]]
+      game.take_turn(3)
       get '/game', {}, { 'rack.session' => { game: game } }
       expect(last_response.body).to include('<h1>X won!</h1>')
     end
@@ -86,9 +87,12 @@ describe WebApp do
     end
 
     it "should not update the game state further after the game is over" do
-      game = GameStateManager.new(Human.new("X"), Human.new("Y", true))
-      game.store = [["X", "X", "X", "Y", "Y", 6, 7, 8, 9]]
+      game = GameStateManager.new(Human.new("X", true), Human.new("Y"))
+      game.store = [["X", "X", 3, "Y", "Y", 6, 7, 8, 9]]
       get '/game', {}, { 'rack.session' => { game: game } }
+      put '/game', space: "3"
+      expect(last_response.redirect?).to be true
+      follow_redirect!
       put '/game', space: "6"
       expect(last_response.redirect?).to be true
       follow_redirect!

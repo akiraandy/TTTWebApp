@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'pry-byebug'
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -32,7 +33,7 @@ class WebApp < Sinatra::Base
     else
       redirect '/'
     end
-    @board = @game.current_state.each_slice(3).to_a
+    @board = @game.current_state.each_slice(@game.board.row_size).to_a
     erb :game
   end
 
@@ -50,11 +51,18 @@ class WebApp < Sinatra::Base
           second_player = true
         end
 
+        case params[:board_size]
+        when "4"
+            size = 4
+        else
+            size = 3
+        end
+
         case params[:game_type]
         when "HvH"
-          session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player), size)
         when "HvC"
-          session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player), size)
         end
 
         game = session[:game]

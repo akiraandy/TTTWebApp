@@ -1,12 +1,11 @@
 class Board
+  attr_reader :row_size
   attr_accessor :spaces
 
-  def initialize
-    @spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  end
-
-  def to_s
-    " #{@spaces[0]} | #{@spaces[1]} | #{@spaces[2]} \n===+===+===\n #{@spaces[3]} | #{@spaces[4]} | #{@spaces[5]} \n===+===+===\n #{@spaces[6]} | #{@spaces[7]} | #{@spaces[8]} \n"
+  def initialize(row_size = 3)
+    raise InvalidBoardSize if row_size < 3
+    @spaces = Array.new(row_size*row_size) { |i| i.to_i + 1 } 
+    @row_size = row_size
   end
 
   def valid_spot?(spaces = @spaces, spot)

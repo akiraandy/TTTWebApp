@@ -9,7 +9,11 @@ class Computer < Player
   end
 
   def take_corner
-    corners = [1, 3, 7, 9]
+    if game.board.row_size == 3
+        corners = [1,3,7,9]
+    else
+       corners =  [1,4,13,16]
+    end
     @game.board.available_spaces.select { |space| corners.include?(space) }.sample
   end
 
@@ -19,7 +23,6 @@ class Computer < Player
   end
 
   def choose_move
-      # binding.pry
     return take_corner if game.board.unplayed?
     return game.board.last_space if game.board.last_space
     best_possible_move
@@ -43,6 +46,7 @@ class Computer < Player
       game.board.fill_spot(space, current_marker)
       scores.push best_possible_move(game, current_marker)
       moves.push space
+      p moves
       game.board.reset_spot(space)
     end
 

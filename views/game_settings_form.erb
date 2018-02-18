@@ -18,6 +18,14 @@
       <input type="radio" name="first_player" value="second_player" id="second">
       <label for="second"><%= t "y", get_locale %></label>
     </div>
+    <p><%= t "what_size_board", get_locale %></p>
+    <div>
+        <input type="radio" name="board_size" value="3" id="board_size_three" checked>
+        <label for="board_size_three">3 X 3</label>
+
+        <input type="radio" name="board_size" value="4" id="board_size_four">
+        <label for="board_size_four">4 X 4</label>
+    </div>
     <div class="">
       <button class="btn waves-effect waves-light" type="submit"><%= t "play", get_locale %></button>
     </div>

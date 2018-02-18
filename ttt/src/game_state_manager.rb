@@ -4,7 +4,7 @@ require_relative "./errors/invalidRangeForState"
 class GameStateManager < Game_Controller 
   attr_accessor :store, :current
 
-  def initialize(player1, player2)
+  def initialize(player1, player2, size = 3)
     super
     @store = [board.spaces.dup]
     @current = 0
@@ -16,6 +16,7 @@ class GameStateManager < Game_Controller
     if board.valid_spot?(current_state, turn.spot)
         new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
         add_to_store(new_state)
+        board_reflect_state
         turn.valid = true
     else
         turn.valid = false
@@ -39,6 +40,7 @@ class GameStateManager < Game_Controller
 
   def go_back(steps)
     @current - steps < 0 ? @current = 0 : @current -= steps
+    board_reflect_state
   end
   
   def within_state_range(state_index)
@@ -62,11 +64,23 @@ class GameStateManager < Game_Controller
   end
 
   def active_player
-    board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    # board.empty_spaces(current_state).odd? ? players[0] : players[1]
+
+    if board.spaces.length.odd?
+        board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    else
+        board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    end
   end
 
   def inactive_player
-    board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    # board.empty_spaces(current_state).odd? ? players[1] : players[0]
+
+    if board.spaces.length.odd?
+        board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    else
+        board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    end
   end
       
   def three_in_a_row(combo)

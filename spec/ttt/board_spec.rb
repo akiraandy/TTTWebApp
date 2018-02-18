@@ -1,18 +1,21 @@
 require_relative '../../ttt/src/board'
 require_relative '../../ttt/src/player'
-
+require_relative '../../ttt/src/errors/invalidBoardSize'
 RSpec.describe Board do
   let(:board) { Board.new }
+
+  it "should throw error if row_size is less than 3" do
+      expect{ Board.new(0) }.to raise_error(InvalidBoardSize)
+  end
   context "#spaces" do
 
-    it "should be an array of strings from 1 to 9" do
+    it "should default to an array of strings from 1 to 9" do
       expect(board.spaces).to eq([1, 2, 3, 4, 5, 6, 7, 8, 9])
     end
-  end
 
-  context "#to_s" do
-    it "should return a string" do
-      expect(board.to_s).to eq(" #{board.spaces[0]} | #{board.spaces[1]} | #{board.spaces[2]} \n===+===+===\n #{board.spaces[3]} | #{board.spaces[4]} | #{board.spaces[5]} \n===+===+===\n #{board.spaces[6]} | #{board.spaces[7]} | #{board.spaces[8]} \n")
+    it "can be sized to any size" do
+        new_board = Board.new(4)
+        expect(new_board.spaces).to eq([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16])
     end
   end
 

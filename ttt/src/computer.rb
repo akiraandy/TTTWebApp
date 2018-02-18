@@ -46,7 +46,6 @@ class Computer < Player
       game.board.fill_spot(space, current_marker)
       scores.push best_possible_move(game, current_marker)
       moves.push space
-      p moves
       game.board.reset_spot(space)
     end
 

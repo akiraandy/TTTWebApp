@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/akiraandy/TTTWebApp.svg?branch=master)](https://travis-ci.org/akiraandy/TTTWebApp)
+
 # Tic Tac Toe Web App
 
 This is a web-browser version of the game Tic Tac Toe that provides two game modes: Human Vs. Human and Human Vs. Computer. Upon loading the application, choose the game mode you would like to play and who you would like to start first. First player is always "X" and the player going second will always be "Y". To place a marker on the board, click the cell you wish you place your marker in. Enjoy!

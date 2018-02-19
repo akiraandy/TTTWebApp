@@ -1,5 +1,3 @@
-# require 'sinatra/base'
-# require_relative '../app'
 require 'rack/test'
 require 'rspec'
 require 'json'

@@ -7,6 +7,13 @@ class Board
     @spaces = Array.new(row_size*row_size) { |i| i.to_i + 1 } 
     @row_size = row_size
   end
+  
+  def corners
+      corners = [spaces[0]]
+      corners << row_size
+      corners << (row_size * row_size) - row_size
+      corners << row_size * row_size
+  end
 
   def valid_spot?(spaces = @spaces, spot)
     spaces[spot - 1] == spot

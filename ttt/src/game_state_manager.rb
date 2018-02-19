@@ -64,7 +64,6 @@ class GameStateManager < Game_Controller
   end
 
   def active_player
-    # board.empty_spaces(current_state).odd? ? players[0] : players[1]
 
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[0] : players[1]
@@ -74,20 +73,11 @@ class GameStateManager < Game_Controller
   end
 
   def inactive_player
-    # board.empty_spaces(current_state).odd? ? players[1] : players[0]
 
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[1] : players[0]
     else
         board.empty_spaces(current_state).odd? ? players[0] : players[1]
     end
-  end
-      
-  def three_in_a_row(combo)
-    [current_state[combo[0]], current_state[combo[1]], current_state[combo[2]]]
-  end
-  
-  def tie?
-    board.full?(current_state) && !winner?
   end
 end

@@ -12,7 +12,7 @@ class Board
   def corners
       corners = [spaces[0]]
       corners << row_size
-      corners << (row_size * row_size) - row_size
+      corners << (row_size * row_size) - (row_size - 1)
       corners << row_size * row_size
   end
 

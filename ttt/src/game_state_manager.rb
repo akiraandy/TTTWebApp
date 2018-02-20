@@ -28,6 +28,10 @@ class GameStateManager < Game_Controller
     store[current]
   end
 
+  def last_item_in_store
+      @store.length - 1
+  end
+
   def board_reflect_state
       board.spaces = current_state
   end
@@ -35,7 +39,7 @@ class GameStateManager < Game_Controller
   def add_to_store(state)
     remove_from_store until current_at_last_position?
     @store << state
-    set_current(@store.length - 1)
+    set_current(last_item_in_store)
   end
 
   def go_back(steps)
@@ -44,7 +48,7 @@ class GameStateManager < Game_Controller
   end
   
   def within_state_range(state_index)
-    state_index >= 0 && state_index <= @store.length - 1
+    state_index >= 0 && state_index <= last_item_in_store 
   end
 
   def set_current(state_index)
@@ -60,11 +64,10 @@ class GameStateManager < Game_Controller
   end
 
   def current_at_last_position?
-    @store.length - 1 == @current
+    last_item_in_store == @current
   end
 
   def active_player
-
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[0] : players[1]
     else
@@ -73,7 +76,6 @@ class GameStateManager < Game_Controller
   end
 
   def inactive_player
-
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[1] : players[0]
     else

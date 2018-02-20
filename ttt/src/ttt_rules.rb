@@ -1,5 +1,4 @@
 require 'matrix'
-require 'pry-byebug'
 module TTTRules
     attr_reader :board
 

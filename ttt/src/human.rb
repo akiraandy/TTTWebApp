@@ -9,5 +9,4 @@ class Human < Player
   def take_turn(args)
       Turn.new(marker, args[:spot])
   end
-
 end

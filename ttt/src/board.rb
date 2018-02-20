@@ -28,10 +28,6 @@ class Board
       available_spaces(spaces).length == spaces.length 
   end
 
-  def last_space
-    available_spaces.length == 1 ? available_spaces[0] : nil
-  end
-
   def empty_spaces(spaces = @spaces)
     spaces.count { |space| space.is_a? Integer }
   end

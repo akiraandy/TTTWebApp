@@ -50,6 +50,7 @@ RSpec.describe Computer do
     it "puts a marker down in a spot if placing the opponent's marker there would win them the game" do
       game.add_to_store(["O", 2, "X", "X", "O", 6, 7, 8, 9])
       game.board_reflect_state 
+      binding.pry
       expect(computer.choose_move).to eq(9)
       game.add_to_store([1, 2, "X", "X", "O", 6, 7, "O", 9])
       game.board_reflect_state

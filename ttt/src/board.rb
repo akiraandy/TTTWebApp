@@ -1,3 +1,4 @@
+require_relative "./errors/invalid_board_size"
 class Board
   attr_reader :row_size
   attr_accessor :spaces

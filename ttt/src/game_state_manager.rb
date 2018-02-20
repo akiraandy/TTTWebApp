@@ -1,5 +1,5 @@
 require_relative "game_controller"
-require_relative "./errors/invalidRangeForState"
+require_relative "./errors/invalid_range_for_state"
 
 class GameStateManager < Game_Controller 
   attr_accessor :store, :current

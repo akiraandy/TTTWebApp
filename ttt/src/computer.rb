@@ -1,5 +1,4 @@
 require_relative 'player'
-require 'pry-byebug'
 class Computer < Player
   attr_accessor :game
   attr_reader :best_move
@@ -30,7 +29,7 @@ class Computer < Player
     return -1000 / depth
   end
 
-  def best_possible_move(game,last_move_marker=@opponent.marker, depth = 0, alpha = -1000, beta = 1000, color = 1, max_depth = 6)
+  def best_possible_move(game, last_move_marker=@opponent.marker, depth = 0, alpha = -1000, beta = 1000, color = 1, max_depth = 6)
     current_marker = nil
     return color * score(game, depth) if game.over? || depth > max_depth
 
@@ -52,10 +51,6 @@ class Computer < Player
   end
 
   def next_player_marker(last_move_marker)
-      if last_move_marker == @opponent.marker
-          marker
-      else
-          @opponent.marker
-      end
+    last_move_marker == @opponent.marker ? marker : @opponent.marker
   end
 end

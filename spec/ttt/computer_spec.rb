@@ -1,4 +1,3 @@
-require 'pry-byebug'
 require_relative '../../ttt/src/computer'
 require_relative '../../ttt/src/board'
 require_relative '../../ttt/src/human'

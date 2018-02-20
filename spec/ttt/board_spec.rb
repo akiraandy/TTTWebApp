@@ -1,6 +1,6 @@
 require_relative '../../ttt/src/board'
 require_relative '../../ttt/src/player'
-require_relative '../../ttt/src/errors/invalidBoardSize'
+require_relative '../../ttt/src/errors/invalid_board_size'
 RSpec.describe Board do
   let(:board) { Board.new }
 

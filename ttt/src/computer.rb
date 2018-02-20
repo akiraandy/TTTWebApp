@@ -8,19 +8,19 @@ class Computer < Player
     super
   end
 
-  def take_corner
-    game.board.corners.sample
-  end
-
   def take_turn(args)
     @game = args[:game]
     Turn.new(marker, choose_move)
   end
 
+  def take_corner
+    game.board.corners.sample
+  end
+
   def choose_move
     @best_move = {}
     return take_corner if game.board.unplayed?
-    negamax(game)
+    best_possible_move(game)
     @best_move.max_by { |key, value| value }[0]
   end
 
@@ -30,14 +30,16 @@ class Computer < Player
     return -1000 / depth
   end
 
-  def negamax(game, depth = 0, alpha = -1000, beta = 1000, color = 1)
+  def best_possible_move(game,last_move_marker=@opponent.marker, depth = 0, alpha = -1000, beta = 1000, color = 1)
+    current_marker = nil
     return color * score(game, depth) if game.over?
 
     max = -1000
 
     game.board.available_spaces.each do |space|
-      game.board.fill_spot(space, game.active_player.marker)
-      negamax_value = -negamax(game, depth+1, -beta, -alpha, -color)
+      current_marker = next_player_marker(last_move_marker)
+      game.board.fill_spot(space, current_marker)
+      negamax_value = -best_possible_move(game, depth+1, -beta, -alpha, -color)
       game.board.reset_spot(space)
 
       max = [max, negamax_value].max
@@ -47,5 +49,13 @@ class Computer < Player
     end
 
     max
+  end
+
+  def next_player_marker(last_move_marker)
+      if last_move_marker == @opponent.marker
+          marker
+      else
+          @opponent.marker
+      end
   end
 end

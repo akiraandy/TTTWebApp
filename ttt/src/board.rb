@@ -10,10 +10,10 @@ class Board
   end
   
   def corners
-      corners = [spaces[0]]
-      corners << row_size
-      corners << (row_size * row_size) - (row_size - 1)
-      corners << row_size * row_size
+    corners = [spaces[0]]
+    corners << row_size
+    corners << (row_size * row_size) - (row_size - 1)
+    corners << row_size * row_size
   end
 
   def valid_spot?(spaces = @spaces, spot)
@@ -25,7 +25,7 @@ class Board
   end
 
   def unplayed?(spaces = @spaces)
-      available_spaces(spaces).length == spaces.length 
+    available_spaces(spaces).length == spaces.length 
   end
 
   def empty_spaces(spaces = @spaces)
@@ -38,7 +38,7 @@ class Board
   end
 
   def reset_spot(spot)
-    @spaces[spot - 1] = spot
+    spaces[spot - 1] = spot
   end
 
   def full?(spaces = @spaces)

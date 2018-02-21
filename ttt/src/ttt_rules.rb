@@ -3,11 +3,11 @@ module TTTRules
     attr_reader :board
 
     def winner?
-        winning_combos.any? { |combo| combo.uniq.length == 1 }
+        winning_combos.any? { |combo| all_same_marker?(combo) }
     end
 
     def winner
-        winner? ? winning_combos.find { |combo| combo.uniq.length == 1}[0] : nil 
+        winner? ? winning_combos.find { |combo| all_same_marker?(combo) }[0] : nil 
     end
 
     def tie?
@@ -19,6 +19,10 @@ module TTTRules
     end
 
     private
+
+    def all_same_marker?(combo)
+        combo.uniq.length == 1
+    end
 
     def winning_combos
         combos = []

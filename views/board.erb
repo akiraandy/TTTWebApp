@@ -2,7 +2,7 @@
   <% @board.each do |row| %>
     <tr>
       <% row.each do |space|%>
-        <td data-cell="cell" data-id="<%= space %>"><%= space %></td>
+          <td data-cell="cell" data-id="<%= space %>"><%= space == "X" || space == "Y" ? space : "" %></td>
       <% end %>
     </tr>
   <% end %>

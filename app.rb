@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'pry-byebug'
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -42,7 +43,7 @@ class WebApp < Sinatra::Base
         erb :welcome
     else
         case params[:first_player]
-        when "first_player"
+        when "PLAYER_ONE"
           first_player = true
           second_player = false
         else

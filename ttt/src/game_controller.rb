@@ -24,22 +24,6 @@ class Game_Controller
     [@player1, @player2].sort_by { |player| player.first ? 0 : 1 }
   end
 
-  def active_player
-    if board.spaces.length.odd?
-        board.empty_spaces.odd? ? players[0] : players[1]
-    else
-        board.empty_spaces.odd? ? players[1] : players[0]
-    end
-  end
-
-  def inactive_player
-    if board.spaces.length.odd?
-        board.empty_spaces.odd? ? players[1] : players[0]
-    else
-        board.empty_spaces.odd? ? players[0] : players[1]
-    end
-  end
-
   def take_turn(spot = nil)
     turn = active_player.take_turn({game: self, spot: spot})
     if board.valid_spot?(turn.spot)

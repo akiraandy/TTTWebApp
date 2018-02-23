@@ -64,12 +64,7 @@ class WebApp < Sinatra::Base
           session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player), size)
         end
 
-
         game = session[:game]
-
-
-        # game.add_to_store([1,2,3,"Y",5,"X",7,8,9,10,11,12,13,14,15,16])
-    
 
         if game.active_player.class == Computer
           game.take_turn

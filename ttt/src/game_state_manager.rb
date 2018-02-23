@@ -71,7 +71,7 @@ class GameStateManager < Game_Controller
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[0] : players[1]
     else
-        board.empty_spaces(current_state).odd? ? players[1] : players[0]
+        board.empty_spaces(current_state).even? ? players[1] : players[0]
     end
   end
 

@@ -96,7 +96,7 @@ describe WebApp do
       put '/game', space: "6"
       expect(last_response.redirect?).to be true
       follow_redirect!
-      expect(last_response.body).to include('<td data-cell="cell" data-id="6">6</td>')
+      expect(last_response.body).to include('<td data-cell="cell" data-id="6"></td>')
     end
   end
 

@@ -1,10 +1,10 @@
 require_relative "game_controller"
-require_relative "./errors/invalidRangeForState"
+require_relative "./errors/invalid_range_for_state"
 
 class GameStateManager < Game_Controller 
   attr_accessor :store, :current
 
-  def initialize(player1, player2)
+  def initialize(player1, player2, size = 3)
     super
     @store = [board.spaces.dup]
     @current = 0
@@ -16,6 +16,7 @@ class GameStateManager < Game_Controller
     if board.valid_spot?(current_state, turn.spot)
         new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
         add_to_store(new_state)
+        board_reflect_state
         turn.valid = true
     else
         turn.valid = false
@@ -27,6 +28,10 @@ class GameStateManager < Game_Controller
     store[current]
   end
 
+  def last_item_in_store
+      @store.length - 1
+  end
+
   def board_reflect_state
       board.spaces = current_state
   end
@@ -34,15 +39,16 @@ class GameStateManager < Game_Controller
   def add_to_store(state)
     remove_from_store until current_at_last_position?
     @store << state
-    set_current(@store.length - 1)
+    set_current(last_item_in_store)
   end
 
   def go_back(steps)
     @current - steps < 0 ? @current = 0 : @current -= steps
+    board_reflect_state
   end
   
   def within_state_range(state_index)
-    state_index >= 0 && state_index <= @store.length - 1
+    state_index >= 0 && state_index <= last_item_in_store 
   end
 
   def set_current(state_index)
@@ -58,22 +64,22 @@ class GameStateManager < Game_Controller
   end
 
   def current_at_last_position?
-    @store.length - 1 == @current
+    last_item_in_store == @current
   end
 
   def active_player
-    board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    if board.spaces.length.odd?
+        board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    else
+        board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    end
   end
 
   def inactive_player
-    board.empty_spaces(current_state).odd? ? players[1] : players[0]
-  end
-      
-  def three_in_a_row(combo)
-    [current_state[combo[0]], current_state[combo[1]], current_state[combo[2]]]
-  end
-  
-  def tie?
-    board.full?(current_state) && !winner?
+    if board.spaces.length.odd?
+        board.empty_spaces(current_state).odd? ? players[1] : players[0]
+    else
+        board.empty_spaces(current_state).odd? ? players[0] : players[1]
+    end
   end
 end

@@ -15,6 +15,7 @@ class WebApp < Sinatra::Base
     def set_locale(locale)
       I18n.locale = locale
     end
+
   end
 
   before do
@@ -31,38 +32,51 @@ class WebApp < Sinatra::Base
     else
       redirect '/'
     end
-    @board = @game.current_state.each_slice(3).to_a
+    @board = @game.current_state.each_slice(@game.board.row_size).to_a
     erb :game
   end
 
   post '/game' do
     if !params[:game_type] || !params[:first_player]
-      redirect '/'
-    end
-
-    case params[:first_player]
-    when "first_player"
-      first_player = true
-      second_player = false
+        @error = t "error", get_locale 
+        erb :welcome
     else
-      first_player = false
-      second_player = true
+        case params[:first_player]
+        when "first_player"
+          first_player = true
+          second_player = false
+        else
+          first_player = false
+          second_player = true
+        end
+
+        case params[:board_size]
+        when "4"
+            size = 4
+        else
+            size = 3
+        end
+
+        case params[:game_type]
+        when "HvH"
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player), size)
+        when "HvC"
+          session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player), size)
+        end
+
+
+        game = session[:game]
+
+
+        # game.add_to_store([1,2,3,"Y",5,"X",7,8,9,10,11,12,13,14,15,16])
+    
+
+        if game.active_player.class == Computer
+          game.take_turn
+        end
+
+        redirect '/game'
     end
-
-    case params[:game_type]
-    when "HvH"
-      session[:game] = GameStateManager.new(Human.new("X", first_player), Human.new("Y", second_player))
-    when "HvC"
-      session[:game] = GameStateManager.new(Human.new("X", first_player), Computer.new("Y", second_player))
-    end
-
-    game = session[:game]
-
-    if game.active_player.class == Computer
-      game.take_turn
-    end
-
-    redirect '/game'
   end
 
   post '/locale' do

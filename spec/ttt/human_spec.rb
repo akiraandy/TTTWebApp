@@ -13,13 +13,13 @@ RSpec.describe Human do
     $stdin = STDIN
   end
 
-  it "should inherit marker from parent class" do
+  it "inherits marker from parent class" do
     player1 = Human.new("X")
     expect(player1.marker).to eq ("X")
   end
 
   context "#take_turn" do
-    it "should return a Turn" do
+    it "returns a Turn" do
       spot = 1
       human.take_turn({spot: spot})
       expect(human.take_turn({spot: spot})).to be_a(Player::Turn)

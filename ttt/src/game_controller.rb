@@ -1,16 +1,16 @@
 require_relative 'board'
 require_relative 'player'
+require_relative 'ttt_rules'
 
 class Game_Controller
-  attr_reader :player1, :player2, :active_player_marker, :inactive_player_marker
+    include TTTRules
+  attr_reader :player1, :player2
   attr_accessor :board
 
-  WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
-
-  def initialize(player1, player2)
+  def initialize(player1, player2, size = 3)
     @player1 = player1
     @player2 = player2
-    @board = Board.new
+    @board = Board.new(size)
     assign_opponents
   end
 
@@ -24,41 +24,20 @@ class Game_Controller
     [@player1, @player2].sort_by { |player| player.first ? 0 : 1 }
   end
 
-  def winner?
-    WINNING_COMBOS.each do |combo|
-      return true if three_in_a_row(combo).uniq.length == 1
-    end
-    false
-  end
-
-  def over?
-    winner? || tie?
-  end
-
-  # takes in a combination of winning spaces and matches those indexes to the current board
-  def three_in_a_row(combo)
-    [@board.spaces[combo[0]], @board.spaces[combo[1]], @board.spaces[combo[2]]]
-  end
-
-  def tie?
-    board.full? && !winner?
-  end
-
   def active_player
-    board.empty_spaces.odd? ? players[0] : players[1]
+    if board.spaces.length.odd?
+        board.empty_spaces.odd? ? players[0] : players[1]
+    else
+        board.empty_spaces.odd? ? players[1] : players[0]
+    end
   end
 
   def inactive_player
-    board.empty_spaces.odd? ? players[1] : players[0]
-  end
-
-  def winner
-    WINNING_COMBOS.each do |combo|
-      if three_in_a_row(combo).uniq.length == 1
-        return three_in_a_row(combo)[0]
-      end
+    if board.spaces.length.odd?
+        board.empty_spaces.odd? ? players[1] : players[0]
+    else
+        board.empty_spaces.odd? ? players[0] : players[1]
     end
-    nil
   end
 
   def take_turn(spot = nil)
@@ -70,13 +49,5 @@ class Game_Controller
         turn.valid = false
     end
     turn
-  end
-
-  def active_player_marker
-    active_player.marker
-  end
-
-  def inactive_player_marker
-    inactive_player.marker
   end
 end

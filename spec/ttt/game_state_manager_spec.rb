@@ -7,36 +7,36 @@ RSpec.describe GameStateManager do
   let(:player2) { Human.new("Y") }
   let(:game) { GameStateManager.new(player1, player2)}
 
-  it "should be initialized with two players" do
+  it "initialized with two players" do
     expect{ GameStateManager.new(player1, player2) }.not_to raise_error
   end
 
-  it "should be initialized with a current property" do
+  it "initialized with a current property" do
     expect{game.current}.not_to raise_error
   end
 
-  it "should have a board attribute" do
+  it "has a board attribute" do
     expect(game.board).to be_a Board
   end
 
-  it "should have a store attribute that starts with a state object" do
+  it "has a store attribute that starts with a state object" do
     expect(game.store.length).to eq 1
   end
 
   context "#add_to_store" do
-    it "should add state to the store" do
+    it "adds state to the store" do
       game.add_to_store(Array.new(0))
       expect(game.store.length).to be 2
     end
 
-    it "should delete all states ahead of the current one being added" do
+    it "deletes all states ahead of the current one being added" do
       game.store = ["a", "b", "c", "d"]
       game.current = 0
       game.add_to_store("e")
       expect(game.store).to eq ["a", "e"]
     end
 
-    it "should set the current state to the one just added" do
+    it "sets the current state to the one just added" do
       game.store = ["a", "b", "c", "d"]
       game.current = 0
       game.add_to_store("e")

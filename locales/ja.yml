@@ -12,3 +12,5 @@ ja:
   play: "プレイー"
   back: "戻る"
   confirm: "確認"
+  error: "ゲームの設定を確認してください"
+  what_board_size: "ボードのサイズ"

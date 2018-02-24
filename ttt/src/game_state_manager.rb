@@ -1,6 +1,5 @@
 require_relative "game_controller"
 require_relative "./errors/invalid_range_for_state"
-require 'pry-byebug'
 class GameStateManager < Game_Controller 
   attr_accessor :store, :current
 
@@ -76,7 +75,6 @@ class GameStateManager < Game_Controller
   end
 
   def inactive_player
-      binding.pry
     if board.spaces.length.odd?
         board.empty_spaces(current_state).odd? ? players[1] : players[0]
     else

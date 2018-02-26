@@ -1,5 +1,5 @@
 $(document).ready(() => {
-  let debounced = _.debounce(fireAjax, 5000, {
+  let debounced = _.debounce(fireAjax, 1000, {
       'leading': true,
       'trailing': false
   });

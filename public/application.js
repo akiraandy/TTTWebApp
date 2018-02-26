@@ -1,8 +1,31 @@
 $(document).ready(() => {
-  play();
+  let debounced = _.debounce(fireAjax, 5000, {
+      'leading': true,
+      'trailing': false
+  });
+   $('[data-cell="cell"]').on('click', (e) => {
+       debounced(e);
+   });
   browserBackButtonClicked();
   goBackToWelcome();
 });
+
+function fireAjax(e) {
+    let request = $.ajax({
+        type: "PUT",
+        url: "/game",
+        data: {
+        space: $(e.currentTarget).data('id'),
+        },
+        dataType: "json"
+    });
+    request.then((response) => {
+      putMarkersDown(response);
+      if (response.over === true) {
+        gameResult(response);
+      };
+    });
+}
 
 function browserBackButtonClicked(){
 
@@ -20,36 +43,16 @@ function goBackToWelcome(){
        e.preventDefault();
        document.location.href="/";
     });
-}
+};
 
 function rewind(){
-let request = $.ajax({
+    let request = $.ajax({
         type: "PUT",
         url: "/rewind",
         dataType: "json"
     });
     request.then(() => {
         location.reload();
-    });
-};
-
-function play() {
-    $('[data-cell="cell"]').click(e => {
-    e.preventDefault();
-    let request = $.ajax({
-        type: "PUT",
-        url: "/game",
-        data: {
-            space: $(e.currentTarget).data('id'),
-        },
-    dataType: "json"
-    });
-    request.then((response) => {
-      putMarkersDown(response);
-      if (response.over === true) {
-        gameResult(response);
-      };
-    });
     });
 };
 

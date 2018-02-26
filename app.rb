@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'pry-byebug'
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"

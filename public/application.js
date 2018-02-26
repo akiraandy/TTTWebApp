@@ -7,7 +7,6 @@ $(document).ready(() => {
        debounced(e);
    });
   browserBackButtonClicked();
-  goBackToWelcome();
 });
 
 function fireAjax(e) {
@@ -39,10 +38,7 @@ function browserBackButtonClicked(){
 };
 
 function goBackToWelcome(){
-    $('[data-id=gobacktowelcome]').click(e => {
-       e.preventDefault();
-       document.location.href="/";
-    });
+   document.location.href="/";
 };
 
 function rewind(){
@@ -52,8 +48,12 @@ function rewind(){
         dataType: "json"
     });
     request.then(() => {
-        location.reload();
+        reloadPage();
     });
+};
+
+function reloadPage() {
+    location.reload();
 };
 
 function putMarkersDown(response) {
@@ -73,10 +73,10 @@ function gameResult(response) {
 
 function winner(response) {
     $('[data-id=result]').append(`<h1>${response.winner}${response.win_locale}</h1>`);
-    $('[data-id=result]').append(`<button type="button" onclick="history.back();">${response.back}</button>`);
+    $('[data-id=result]').append(`<button type="button" onclick="goBackToWelcome();">${response.back}</button>`);
 };
 
 function tie(response) {
     $('[data-id=result]').append(`<h1>${response.tie_locale}</h1>`);
-    $('[data-id=result]').append(`<button type="button" onclick="history.back();">${response.back}</button>`);
+    $('[data-id=result]').append(`<button type="button" onclick="goBackToWelcome();">${response.back}</button>`);
 };

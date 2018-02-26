@@ -11,7 +11,10 @@
 #   - 'dist/**/*.js'
 #
 src_files:
-  - public/**/*.js
+  - public/jquery-3.3.1.js
+  - public/lodash.js
+  - public/application.js
+  - spec/javascripts/jasmine_plugins/*.js
 
 # stylesheets
 #
@@ -25,7 +28,7 @@ src_files:
 #   - 'stylesheets/*.css'
 #
 stylesheets:
-  - stylesheets/**/*.css
+  - public/*.css
 
 # helpers
 #
@@ -73,7 +76,7 @@ src_dir:
 #
 # spec_dir: spec/javascripts
 #
-spec_dir: spec/javascripts
+spec_dir:
 
 # spec_helper
 #
@@ -142,3 +145,4 @@ boot_files:
 # random: false
 #
 random:
+

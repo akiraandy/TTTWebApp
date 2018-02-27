@@ -15,6 +15,7 @@ src_files:
   - public/lodash.js
   - public/application.js
   - spec/javascripts/jasmine_plugins/*.js
+  - spec/javascripts/helpers/test_responses.js
 
 # stylesheets
 #

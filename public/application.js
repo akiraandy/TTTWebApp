@@ -42,13 +42,16 @@ function goBackToWelcome(){
 };
 
 function rewind(){
+    console.log("How about here?");
     let request = $.ajax({
         type: "PUT",
         url: "/rewind",
         dataType: "json"
     });
     request.then(() => {
+        console.log("Did we get here?!");
         reloadPage();
+        return "HELLO";
     });
 };
 

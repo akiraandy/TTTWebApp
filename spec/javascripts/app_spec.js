@@ -63,11 +63,16 @@ describe("App", function() {
 
     describe("#rewind", function() {
         beforeEach(() => {
+            var server;
+            server = sinon.fakeServer.create();
             jasmine.Ajax.install();
+            rewind();
+            request = jasmine.Ajax.requests.mostRecent();
         });
 
         afterEach(() => {
             jasmine.Ajax.uninstall();
+            server.restore();
         });
 
         it("will make PUT request", function() {
@@ -75,6 +80,7 @@ describe("App", function() {
         });
 
         it("will execute #reloadPage", function() {
+            expect(reloadPage).toHaveBeenCalled();
         });
 
         it("will reload the page", function() {

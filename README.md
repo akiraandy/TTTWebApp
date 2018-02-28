@@ -37,26 +37,26 @@ npm install -g karma-cli
 
 ```
 
-6. Run npm
+7. Run npm
 ```
 npm install
 ```
 
-7. Start the server
+8. Start the server
 ```
 npm run server
 ```
 
-8. Navigate to the localhost address that shotgun gives you in your browser i.e.
+9. Navigate to the localhost address that shotgun gives you in your browser i.e.
 ```
 http://localhost:9393/
 ```
 
-9. To run the rspec test suite
+10. To run the rspec test suite
 ```
 bundle exec rspec
 ```
-10. To run the javascript test suite
+11. To run the javascript test suite
 ```
 karma start
 ```

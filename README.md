@@ -31,6 +31,12 @@ cd ~/TTTWebApp
 ```
 bundle install
 ```
+6. Install karma
+```
+npm install -g karma-cli
+
+```
+
 6. Run npm
 ```
 npm install

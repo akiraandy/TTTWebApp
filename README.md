@@ -31,18 +31,26 @@ cd ~/TTTWebApp
 ```
 bundle install
 ```
-
-6. Start the server
+6. Run npm
 ```
-bundle exec shotgun
+npm install
 ```
 
-7. Navigate to the localhost address that shotgun gives you in your browser i.e.
+7. Start the server
+```
+npm run server
+```
+
+8. Navigate to the localhost address that shotgun gives you in your browser i.e.
 ```
 http://localhost:9393/
 ```
 
-8. To run the test suite
+9. To run the rspec test suite
 ```
 bundle exec rspec
+```
+10. To run the javascript test suite
+```
+karma start
 ```

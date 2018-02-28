@@ -32,17 +32,17 @@ cd ~/TTTWebApp
 bundle install
 ```
 
-7. Start the server
+6. Start the server
 ```
 bundle exec shotgun
 ```
 
-8. Navigate to the localhost address that shotgun gives you in your browser i.e.
+7. Navigate to the localhost address that shotgun gives you in your browser i.e.
 ```
 http://localhost:9393/
 ```
 
-9. To run the rspec test suite
+8. To run the rspec test suite
 ```
 bundle exec rspec
 ```

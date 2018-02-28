@@ -36,21 +36,21 @@ bundle install
 npm install
 ```
 
-6. Start the server
+7. Start the server
 ```
 npm run server
 ```
 
-7. Navigate to the localhost address that shotgun gives you in your browser i.e.
+8. Navigate to the localhost address that shotgun gives you in your browser i.e.
 ```
 http://localhost:9393/
 ```
 
-8. To run the rspec test suite
+9. To run the rspec test suite
 ```
 bundle exec rspec
 ```
-9. To run the javascript test suite
+10. To run the javascript test suite
 ```
 karma start
 ```

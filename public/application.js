@@ -1,15 +1,21 @@
+import _ from "lodash";
+import $ from "jquery";
 $(document).ready(() => {
-  let debounced = _.debounce(fireAjax, 1000, {
+  clickCell();
+  browserBackButtonClicked();
+});
+
+export function clickCell() {
+  let debounced = _.debounce(fireAjax, 5000, {
       'leading': true,
       'trailing': false
   });
    $('[data-cell="cell"]').on('click', (e) => {
        debounced(e);
    });
-  browserBackButtonClicked();
-});
+}
 
-function fireAjax(e) {
+export function fireAjax(e) {
     let request = $.ajax({
         type: "PUT",
         url: "/game",
@@ -26,7 +32,7 @@ function fireAjax(e) {
     });
 }
 
-function browserBackButtonClicked(){
+export function browserBackButtonClicked(){
 
   if (window.history && window.history.pushState) {
 
@@ -37,36 +43,33 @@ function browserBackButtonClicked(){
   };
 };
 
-function goBackToWelcome(){
+export function goBackToWelcome(){
    document.location.href="/";
 };
 
-function rewind(){
-    console.log("How about here?");
+export function rewind(){
     let request = $.ajax({
         type: "PUT",
         url: "/rewind",
         dataType: "json"
     });
     request.then(() => {
-        console.log("Did we get here?!");
         reloadPage();
-        return "HELLO";
     });
 };
 
-function reloadPage() {
+export function reloadPage() {
     location.reload();
 };
 
-function putMarkersDown(response) {
+export function putMarkersDown(response) {
     response.moves.forEach(move => {
       $(`[data-id=${move.spot}]`).empty();
       $(`[data-id=${move.spot}]`).append(move.marker);
     });
 };
 
-function gameResult(response) {
+export function gameResult(response) {
     if (response.winner) {
         winner(response);
     } else if (response.tie) {
@@ -74,12 +77,18 @@ function gameResult(response) {
     };
 };
 
-function winner(response) {
+export function winner(response) {
     $('[data-id=result]').append(`<h1>${response.winner}${response.win_locale}</h1>`);
-    $('[data-id=result]').append(`<button type="button" onclick="goBackToWelcome();">${response.back}</button>`);
+    $('[data-id=result]').append(`<button type="button" data-id="goBack">${response.back}</button>`);
+    $('[data-id="goBack"]').click(() => {
+       goBackToWelcome();
+    });
 };
 
-function tie(response) {
+export function tie(response) {
     $('[data-id=result]').append(`<h1>${response.tie_locale}</h1>`);
-    $('[data-id=result]').append(`<button type="button" onclick="goBackToWelcome();">${response.back}</button>`);
+    $('[data-id=result]').append(`<button type="button" data-id="goBack">${response.back}</button>`);
+    $('[data-id="goBack"]').click(() => {
+       goBackToWelcome();
+    });
 };

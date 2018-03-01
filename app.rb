@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'pry-byebug'
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, "something"
@@ -92,6 +91,20 @@ class WebApp < Sinatra::Base
     end
     
     JSON.generate(succes: "SUCCESS")
+  end
+
+  get '/playAgain' do
+      if session[:game]
+        game = session[:game]
+        game = GameStateManager.new(game.player1, game.player2)
+        if game.active_player.class == Computer
+            game.take_turn
+        end
+        session[:game] = game
+        redirect '/game'
+      else
+          redirect '/'
+      end
   end
 
   put '/game' do

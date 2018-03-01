@@ -11,7 +11,9 @@
 #   - 'dist/**/*.js'
 #
 src_files:
-  - public/**/*.js
+  - public/bundle.js
+  - spec/javascripts/jasmine_plugins/*.js
+  - spec/javascripts/helpers/test_responses.js
 
 # stylesheets
 #
@@ -25,7 +27,7 @@ src_files:
 #   - 'stylesheets/*.css'
 #
 stylesheets:
-  - stylesheets/**/*.css
+  - public/*.css
 
 # helpers
 #
@@ -73,7 +75,7 @@ src_dir:
 #
 # spec_dir: spec/javascripts
 #
-spec_dir: spec/javascripts
+spec_dir:
 
 # spec_helper
 #
@@ -142,3 +144,4 @@ boot_files:
 # random: false
 #
 random:
+

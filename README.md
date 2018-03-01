@@ -31,18 +31,33 @@ cd ~/TTTWebApp
 ```
 bundle install
 ```
-
-6. Start the server
+6. Install karma
 ```
-bundle exec shotgun
+npm install -g karma-cli
+
 ```
 
-7. Navigate to the localhost address that shotgun gives you in your browser i.e.
+7. Run npm
+```
+npm install
+```
+
+8. Start the server
+```
+npm run server
+```
+
+9. Navigate to the localhost address that shotgun gives you in your browser i.e.
 ```
 http://localhost:9393/
 ```
 
-8. To run the rspec test suite
+
+10. To run the rspec test suite
 ```
 bundle exec rspec
+```
+11. To run the javascript test suite
+```
+karma start
 ```

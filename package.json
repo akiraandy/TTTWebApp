@@ -4,6 +4,7 @@
   "description": "",
   "main": "application.js",
   "scripts": {
+    "postinstall": "webpack",
     "server": "webpack && bundle exec shotgun",
     "rspec": "bundle exec rspec",
     "jasmine": "rake jasmine"

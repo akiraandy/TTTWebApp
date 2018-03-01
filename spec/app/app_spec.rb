@@ -115,4 +115,15 @@ describe WebApp do
       expect(last_response.body).to include('<h1>三目並べ</h1>')
     end
   end
+
+  context 'GET /playAgain' do
+      it "creates a new game using same settings of last game" do
+        game = GameStateManager.new(Human.new("X",true), Human.new("Y"))
+        game.store = [["X","Y","X", "X", "X", "Y", "X", "Y", "Y"]]
+        get '/game', {}, { 'rack.session' => { game: game } }
+        get '/playAgain'
+        follow_redirect!
+        expect(last_response.body).to include('<td data-cell="cell" data-id="6"></td>')
+      end
+  end
 end

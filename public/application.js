@@ -1,18 +1,19 @@
-// import _ from "lodash";
+import _ from "lodash";
 import $ from "jquery";
 $(document).ready(() => {
-  // clickCell();
-  browserBackButtonClicked();
+    clickCell();
+    browserBackButtonClicked();
 });
 
-//   let debounced = _.debounce(fireAjax, 5000, {
-//       'leading': true,
-//       'trailing': false
-//   });
-//    $('[data-cell="cell"]').on('click', (e) => {
-//        debounced(e);
-//    });
-// }
+export function clickCell(){
+  let debounced = _.debounce(fireAjax, 5000, {
+      'leading': true,
+      'trailing': false
+  });
+   $('[data-cell="cell"]').on('click', (e) => {
+       debounced(e);
+   });
+};
 
 export function fireAjax(e) {
     let request = $.ajax({
@@ -23,13 +24,26 @@ export function fireAjax(e) {
         },
         dataType: "json"
     });
+    turnOnSpinner();
     request.then((response) => {
-      putMarkersDown(response);
-      if (response.over === true) {
-        gameResult(response);
-      };
+        putMarkersDown(response);
+        turnOffSpinner();
+        if (response.over === true) {
+            gameResult(response);
+        };
+    })
+    .catch(err => {
+        turnOffSpinner();
     });
 }
+
+export function turnOnSpinner() {
+   $('[data-id=result]').addClass("spinner");
+};
+
+export function turnOffSpinner() {
+    $('[data-id=result]').removeClass("spinner");
+};
 
 export function browserBackButtonClicked(){
 
@@ -57,6 +71,16 @@ export function rewind(){
     });
 };
 
+export function playAgain() {
+    let request = $.ajax({
+        type: "GET",
+        url: "/playAgain"
+    });
+    request.then(() => {
+        reloadPage();
+    });
+};
+
 export function reloadPage() {
     location.reload();
 };
@@ -70,11 +94,11 @@ export function putMarkersDown(response) {
 
 export function gameResult(response) {
     if (response.winner) {
-        console.log(winner);
         winner(response);
     } else if (response.tie) {
         tie(response);
     };
+    addPlayAgainButton();
 };
 
 export function winner(response) {
@@ -84,6 +108,14 @@ export function winner(response) {
        goBackToWelcome();
     });
 };
+
+export function addPlayAgainButton() {
+    $('[data-id=result]').append(`<button type="button" data-id="playagain">Play Again</button>`);
+    $('[data-id="playagain"]').click(() => {
+       playAgain();
+    });
+};
+
 
 export function tie(response) {
     $('[data-id=result]').append(`<h1>${response.tie_locale}</h1>`);

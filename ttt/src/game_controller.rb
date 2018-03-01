@@ -4,12 +4,13 @@ require_relative 'ttt_rules'
 
 class Game_Controller
     include TTTRules
-  attr_reader :player1, :player2
+  attr_reader :player1, :player2, :row_size
   attr_accessor :board
 
   def initialize(player1, player2, size = 3)
     @player1 = player1
     @player2 = player2
+    @row_size = size
     @board = Board.new(size)
     assign_opponents
   end

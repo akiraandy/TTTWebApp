@@ -1,1 +1,1 @@
-web: webpack && bundle exec shotgun
+web: npx webpack && bundle exec shotgun

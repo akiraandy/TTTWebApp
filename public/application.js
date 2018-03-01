@@ -1,19 +1,18 @@
-import _ from "lodash";
+// import _ from "lodash";
 import $ from "jquery";
 $(document).ready(() => {
-  clickCell();
+  // clickCell();
   browserBackButtonClicked();
 });
 
-export function clickCell() {
-  let debounced = _.debounce(fireAjax, 5000, {
-      'leading': true,
-      'trailing': false
-  });
-   $('[data-cell="cell"]').on('click', (e) => {
-       debounced(e);
-   });
-}
+//   let debounced = _.debounce(fireAjax, 5000, {
+//       'leading': true,
+//       'trailing': false
+//   });
+//    $('[data-cell="cell"]').on('click', (e) => {
+//        debounced(e);
+//    });
+// }
 
 export function fireAjax(e) {
     let request = $.ajax({
@@ -71,6 +70,7 @@ export function putMarkersDown(response) {
 
 export function gameResult(response) {
     if (response.winner) {
+        console.log(winner);
         winner(response);
     } else if (response.tie) {
         tie(response);

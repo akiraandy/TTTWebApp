@@ -1,1 +1,2 @@
-web: npx webpack && bundle exec shotgun
+web: npm install webpack-cli -D && npx webpack && bundle exec shotgun
+

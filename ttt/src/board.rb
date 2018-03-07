@@ -1,14 +1,14 @@
-require_relative "./errors/invalid_board_size"
+require_relative './errors/invalid_board_size'
 class Board
   attr_reader :row_size
   attr_accessor :spaces
 
   def initialize(row_size = 3)
     raise InvalidBoardSize if row_size < 3
-    @spaces = Array.new(row_size*row_size) { |i| i.to_i + 1 } 
+    @spaces = Array.new(row_size * row_size) { |i| i.to_i + 1 }
     @row_size = row_size
   end
-  
+
   def corners
     corners = [spaces[0]]
     corners << row_size
@@ -25,7 +25,7 @@ class Board
   end
 
   def unplayed?(spaces = @spaces)
-    available_spaces(spaces).length == spaces.length 
+    available_spaces(spaces).length == spaces.length
   end
 
   def empty_spaces(spaces = @spaces)
@@ -42,6 +42,6 @@ class Board
   end
 
   def full?(spaces = @spaces)
-    spaces.all? { |space| space.is_a? String } 
+    spaces.all? { |space| space.is_a? String }
   end
 end

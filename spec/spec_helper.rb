@@ -11,7 +11,9 @@ require File.expand_path '../../app.rb', __FILE__
 
 module RSpecMixin
   include Rack::Test::Methods
-  def app() WebApp end
+  def app
+    WebApp
+  end
 end
 
 RSpec.configure { |c| c.include RSpecMixin }

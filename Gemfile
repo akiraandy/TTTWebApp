@@ -1,13 +1,13 @@
 ruby '2.5.0'
-gem 'rack'
-gem 'sinatra'
-gem 'json'
-gem 'shotgun'
 gem 'i18n'
+gem 'json'
+gem 'rack'
+gem 'shotgun'
+gem 'sinatra'
 
 group :test, :development do
-  gem 'pry-byebug'
-  gem 'rspec'
-  gem 'rack-test'
   gem 'jasmine'
+  gem 'pry-byebug'
+  gem 'rack-test'
+  gem 'rspec'
 end

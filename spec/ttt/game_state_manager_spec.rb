@@ -54,19 +54,19 @@ RSpec.describe GameStateManager do
     end
   end
 
-  context '#set_current' do
+  context '#adjust_current_state' do
     before(:each) do
       game.store = %w[a b c]
     end
 
     it 'should set state and return the current state' do
       expect(game.current).to eq 0
-      expect(game.set_current(1)).to eq 1
+      expect(game.adjust_current_state(1)).to eq 1
       expect(game.current).to eq 1
     end
 
     it 'should not be able to go less than 0' do
-      expect { game.set_current(-1) }.to raise_error InvalidRangeForState
+      expect { game.adjust_current_state(-1) }.to raise_error InvalidRangeForState
     end
   end
 

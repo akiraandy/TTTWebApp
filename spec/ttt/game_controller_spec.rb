@@ -2,13 +2,13 @@ require_relative '../../ttt/src/game_controller'
 require_relative '../../ttt/src/board'
 require_relative '../../ttt/src/human'
 
-RSpec.describe Game_Controller do
+RSpec.describe GameController do
   let(:player1) { Human.new('X', true) }
   let(:player2) { Human.new('O') }
-  let(:game) { Game_Controller.new(player1, player2) }
+  let(:game) { GameController.new(player1, player2) }
 
   it 'should instantiate a new game_controller without an error' do
-    expect { Game_Controller.new(player1, player2) }.not_to raise_error
+    expect { GameController.new(player1, player2) }.not_to raise_error
   end
 
   it 'player1 and player2 are player objects' do

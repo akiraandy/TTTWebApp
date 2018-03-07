@@ -13,7 +13,7 @@ class GameStateManager < GameController
   def take_turn(spot = nil)
     board_reflect_state
     turn = active_player.take_turn(game: self, spot: spot)
-    if board.valid_spot?(current_state, turn.spot)
+    if board.valid_spot?(turn.spot, current_state)
       handle_state(current_state, turn)
       turn.valid = true
     else
@@ -23,7 +23,7 @@ class GameStateManager < GameController
   end
 
   def handle_state(current_state, turn)
-    new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
+    new_state = board.fill_spot(turn.spot, turn.marker, current_state.dup)
     add_to_store(new_state)
     board_reflect_state
   end
@@ -56,7 +56,7 @@ class GameStateManager < GameController
   end
 
   def adjust_current_state(state_index)
-    raise InvalidRangeForStat unless within_state_range(state_index)
+    raise InvalidRangeForState unless within_state_range(state_index)
     @current = state_index
   end
 

@@ -1,24 +1,24 @@
 <%= erb :errors %>
 <form id="game_settings" action="game" method="post">
-    <p><%= t "choose_game_type", get_locale %></p>
+    <p><%= t "choose_game_type", locale_get %></p>
     <div>
       <input type="radio" name="game_type" value="HvH" id="hvh">
-      <label for="hvh"><%= t "hvh", get_locale %></label>
+      <label for="hvh"><%= t "hvh", locale_get %></label>
 
 
       <input type="radio" name="game_type" value="HvC" id="hvc">
-      <label for="hvc"><%= t "hvc", get_locale %></label>
+      <label for="hvc"><%= t "hvc", locale_get %></label>
     </div>
 
-    <p><%= t "who_should_go_first", get_locale %></p>
+    <p><%= t "who_should_go_first", locale_get %></p>
     <div>
       <input type="radio" name="first_player" value="PLAYER_ONE" id="first">
-      <label for="first"><%= t "x", get_locale %></label>
+      <label for="first"><%= t "x", locale_get %></label>
 
       <input type="radio" name="first_player" value="PLAYER_TWO" id="second">
-      <label for="second"><%= t "y", get_locale %></label>
+      <label for="second"><%= t "y", locale_get %></label>
     </div>
-    <p><%= t "what_size_board", get_locale %></p>
+    <p><%= t "what_size_board", locale_get %></p>
     <div>
         <input type="radio" name="board_size" value="3" id="THREE_BY_THREE" checked>
         <label for="board_size_three">3 X 3</label>
@@ -27,6 +27,6 @@
         <label for="board_size_four">4 X 4</label>
     </div>
     <div class="">
-      <button class="btn waves-effect waves-light" type="submit"><%= t "play", get_locale %></button>
+      <button class="btn waves-effect waves-light" type="submit"><%= t "play", locale_get %></button>
     </div>
 </form>

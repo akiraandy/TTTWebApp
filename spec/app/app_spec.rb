@@ -60,7 +60,7 @@ describe WebApp do
   end
 
   context 'GET /game computer versus human' do
-    before (:each) do
+    before(:each) do
       post '/game', { game_type: 'HvC', first_player: 'second_player' }, 'rack.session' => { game: GameStateManager.new(Human.new('X', false), Computer.new('Y', true)) }
       follow_redirect!
     end

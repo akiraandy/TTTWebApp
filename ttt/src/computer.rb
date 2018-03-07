@@ -1,4 +1,5 @@
 require_relative 'player'
+# Computer inherits from player. Take_turn returns new move. Best_possible_move implements negamax algorithm
 class Computer < Player
   attr_accessor :game
   attr_reader :best_move
@@ -32,21 +33,17 @@ class Computer < Player
   def best_possible_move(game, last_move_marker = @opponent.marker, depth = 0, alpha = -1000, beta = 1000, color = 1, max_depth = 6)
     current_marker = nil
     return color * score(game, depth) if game.over? || depth > max_depth
-
     max = -1000
-
     game.board.available_spaces.each do |space|
       current_marker = next_player_marker(last_move_marker)
       game.board.fill_spot(space, current_marker)
       negamax_value = -best_possible_move(game, current_marker, depth + 1, -beta, -alpha, -color)
       game.board.reset_spot(space)
-
       max = [max, negamax_value].max
-      @best_move[space] = max if depth == 0
+      @best_move[space] = max if depth.zero?
       alpha = [alpha, negamax_value].max
       return alpha if alpha >= beta
     end
-
     max
   end
 

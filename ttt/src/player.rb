@@ -1,3 +1,4 @@
+# Abstract class for Player
 class Player
   Turn = Struct.new(:marker, :spot, :valid)
 

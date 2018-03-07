@@ -1,5 +1,6 @@
 require_relative 'player'
 
+# Human inherits from player. Take_turn returns a new Turn object.
 class Human < Player
   def initialize(marker, first = false)
     super

@@ -1,8 +1,8 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'ttt_rules'
-
-class Game_Controller
+# TTT Game controller
+class GameController
   include TTTRules
   attr_reader :player1, :player2, :row_size
   attr_accessor :board

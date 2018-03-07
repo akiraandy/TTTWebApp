@@ -2,6 +2,7 @@ require_relative '../../ttt/src/ttt_rules.rb'
 require_relative '../../ttt/src/board.rb'
 
 RSpec.describe TTTRules do
+  # dummy game class
   class Game
     include TTTRules
     def initialize

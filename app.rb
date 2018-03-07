@@ -1,10 +1,11 @@
 require 'sinatra/base'
+# Main sinatra app with routes and I18n integration
 class WebApp < Sinatra::Base
   enable :sessions
   set :session_secret, 'something'
 
   helpers do
-    def get_locale
+    def locale_get
       I18n.locale
     end
 
@@ -12,13 +13,13 @@ class WebApp < Sinatra::Base
       I18n.t(*args)
     end
 
-    def set_locale(locale)
+    def locale_set(locale)
       I18n.locale = locale
     end
   end
 
   before do
-    session[:locale] ? set_locale(session[:locale]) : nil
+    session[:locale] ? locale_set(session[:locale]) : nil
   end
 
   get '/' do
@@ -37,7 +38,7 @@ class WebApp < Sinatra::Base
 
   post '/game' do
     if !params[:game_type] || !params[:first_player]
-      @error = t 'error', get_locale
+      @error = t 'error', locale_get
       erb :welcome
     else
       case params[:first_player]
@@ -116,7 +117,7 @@ class WebApp < Sinatra::Base
     end
 
     if request.xhr?
-      JSON.generate(moves: moves, winner: game.winner, tie: game.tie?, over: game.over?, back: (t 'back', get_locale), win_locale: (t 'won', get_locale), tie_locale: (t 'tie', get_locale))
+      JSON.generate(moves: moves, winner: game.winner, tie: game.tie?, over: game.over?, back: (t 'back', locale_get), win_locale: (t 'won', locale_get), tie_locale: (t 'tie', locale_get))
     else
       redirect '/game'
     end

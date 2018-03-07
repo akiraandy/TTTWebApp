@@ -1,6 +1,7 @@
 require_relative 'game_controller'
 require_relative './errors/invalid_range_for_state'
-class GameStateManager < Game_Controller
+# Extends GameControllerClass to include state functionality.
+class GameStateManager < GameController
   attr_accessor :store, :current
 
   def initialize(player1, player2, size = 3)
@@ -13,14 +14,18 @@ class GameStateManager < Game_Controller
     board_reflect_state
     turn = active_player.take_turn(game: self, spot: spot)
     if board.valid_spot?(current_state, turn.spot)
-      new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
-      add_to_store(new_state)
-      board_reflect_state
+      handle_state(current_state, turn)
       turn.valid = true
     else
       turn.valid = false
     end
     turn
+  end
+
+  def handle_state(current_state, turn)
+    new_state = board.fill_spot(current_state.dup, turn.spot, turn.marker)
+    add_to_store(new_state)
+    board_reflect_state
   end
 
   def current_state
@@ -38,7 +43,7 @@ class GameStateManager < Game_Controller
   def add_to_store(state)
     remove_from_store until current_at_last_position?
     @store << state
-    set_current(last_item_in_store)
+    adjust_current_state(last_item_in_store)
   end
 
   def go_back(steps)
@@ -50,12 +55,9 @@ class GameStateManager < Game_Controller
     state_index >= 0 && state_index <= last_item_in_store
   end
 
-  def set_current(state_index)
-    if within_state_range(state_index)
-      @current = state_index
-    else
-      raise InvalidRangeForState
-    end
+  def adjust_current_state(state_index)
+    raise InvalidRangeForStat unless within_state_range(state_index)
+    @current = state_index
   end
 
   def remove_from_store
@@ -68,17 +70,33 @@ class GameStateManager < Game_Controller
 
   def active_player
     if board.spaces.length.odd?
-      board.empty_spaces(current_state).odd? ? players[0] : players[1]
+      odd_active_board_turn_order
     else
-      board.empty_spaces(current_state).even? ? players[0] : players[1]
+      even_active_board_turn_order
     end
+  end
+
+  def odd_active_board_turn_order
+    board.empty_spaces(current_state).odd? ? players[0] : players[1]
+  end
+
+  def even_active_board_turn_order
+    board.empty_spaces(current_state).even? ? players[0] : players[1]
+  end
+
+  def odd_inactive_board_turn_order
+    board.empty_spaces(current_state).odd? ? players[1] : players[0]
+  end
+
+  def even_inactive_board_turn_order
+    board.empty_spaces(current_state).even? ? players[1] : players[0]
   end
 
   def inactive_player
     if board.spaces.length.odd?
-      board.empty_spaces(current_state).odd? ? players[1] : players[0]
+      odd_inactive_board_turn_order
     else
-      board.empty_spaces(current_state).even? ? players[1] : players[0]
+      even_inactive_board_turn_order
     end
   end
 end

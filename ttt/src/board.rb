@@ -1,4 +1,5 @@
 require_relative './errors/invalid_board_size'
+# Board class.
 class Board
   attr_reader :row_size
   attr_accessor :spaces
@@ -16,7 +17,7 @@ class Board
     corners << row_size * row_size
   end
 
-  def valid_spot?(spaces = @spaces, spot)
+  def valid_spot?(spot, spaces = @spaces)
     spaces[spot - 1] == spot
   end
 
@@ -32,7 +33,7 @@ class Board
     spaces.count { |space| space.is_a? Integer }
   end
 
-  def fill_spot(spaces = @spaces, spot, marker)
+  def fill_spot(spot, marker, spaces = @spaces)
     spaces[spot - 1] = marker
     spaces
   end

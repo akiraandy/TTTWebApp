@@ -1,4 +1,5 @@
 require 'matrix'
+# Rules for Tic Tac Toe game
 module TTTRules
   attr_reader :board
 

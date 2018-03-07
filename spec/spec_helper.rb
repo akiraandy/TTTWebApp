@@ -8,7 +8,7 @@ I18n.load_path += Dir[File.join(File.dirname(__FILE__), '../locales', '*.yml').t
 ENV['RACK_ENV'] = 'test'
 
 require File.expand_path '../../app.rb', __FILE__
-
+# Give sinatra to rspec for testing
 module RSpecMixin
   include Rack::Test::Methods
   def app

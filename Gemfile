@@ -10,4 +10,5 @@ group :test, :development do
   gem 'pry-byebug'
   gem 'rack-test'
   gem 'rspec'
+  gem 'rubocop'
 end

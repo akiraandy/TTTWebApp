@@ -7,4 +7,5 @@ before_script:
  - npm install
 script: 
  - bundle exec rspec
+ - bundle exec rubocop
  - node_modules/karma/bin/karma start karma.conf.js --single-run

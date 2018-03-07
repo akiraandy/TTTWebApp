@@ -6,13 +6,13 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <h1><%= t "title", get_locale%></h1>
+    <h1><%= t "title", locale_get%></h1>
     <div data-id="result">
       <% if @game.over? %>
         <% if @game.winner? %>
-          <h1><%= @game.winner %><%= t "won", get_locale%></h1>
+          <h1><%= @game.winner %><%= t "won", locale_get%></h1>
         <% else %>
-          <h1><%= t "tie", get_locale%></h1>
+          <h1><%= t "tie", locale_get%></h1>
         <% end %>
         <button data-id="gobacktowelcome" type="button">Back</button>
       <% end %>

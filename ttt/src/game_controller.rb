@@ -1,9 +1,9 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'ttt_rules'
-
-class Game_Controller
-    include TTTRules
+# TTT Game controller
+class GameController
+  include TTTRules
   attr_reader :player1, :player2, :row_size
   attr_accessor :board
 
@@ -26,12 +26,12 @@ class Game_Controller
   end
 
   def take_turn(spot = nil)
-    turn = active_player.take_turn({game: self, spot: spot})
+    turn = active_player.take_turn(game: self, spot: spot)
     if board.valid_spot?(turn.spot)
-        board.fill_spot(turn.spot)
-        turn.valid = true
+      board.fill_spot(turn.spot)
+      turn.valid = true
     else
-        turn.valid = false
+      turn.valid = false
     end
     turn
   end

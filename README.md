@@ -52,7 +52,6 @@ npm run server
 http://localhost:9393/
 ```
 
-
 10. To run the rspec test suite
 ```
 bundle exec rspec
@@ -60,4 +59,8 @@ bundle exec rspec
 11. To run the javascript test suite
 ```
 karma start
+```
+12. To run rubocop 
+```
+rubocop
 ```
